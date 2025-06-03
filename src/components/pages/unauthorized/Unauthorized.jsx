@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./Unauthorized.css"; // Asegúrate de tener un archivo CSS para estilos personalizados
+import "./Unauthorized.css";
 
 export const Unauthorized = () => (
   <div className="unauthorized-wrapper">
