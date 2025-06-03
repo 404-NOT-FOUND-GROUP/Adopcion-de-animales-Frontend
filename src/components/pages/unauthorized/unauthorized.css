@@ -2,3 +2,30 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
+
+.unauthorized-wrapper {
+  position: relative;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.unauthorized-wrapper::before {
+  content: "";
+  background-image: url('../../../assets/LogoAlbergue.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+}
+
+.unauthorized-content {
+  z-index: 1;
+}
