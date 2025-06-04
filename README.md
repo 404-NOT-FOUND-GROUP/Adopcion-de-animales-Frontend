@@ -1,1 +1,4 @@
-# Adopcion-de-animales-Frontend
+Credenciales del administrador
+
+username: cgomez01
+password: 123Cgomez@
