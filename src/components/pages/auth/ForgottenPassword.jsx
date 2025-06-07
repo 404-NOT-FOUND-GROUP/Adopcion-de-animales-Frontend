@@ -1,17 +1,17 @@
-import { useVerificaContraseña } from "../shared/hooks/useVerifica";
+import { useForgottenPassword } from "../../../shared/hooks/useForgottenPassword";
 
-export const ContraseñaOlvidada = () => {
+export const FogottenPassword = () => {
   const {
     email,
     setEmail,
     isLoading,
     sendResetEmail,
-  } = useVerificaContraseña();
+  } = useForgottenPassword();
 
   return (
     <div className="container" style={{ marginTop: "3rem", marginBottom: "3rem", paddingLeft: "1rem", paddingRight: "1rem" }}>
       <div className="row justify-content-center">
-        <div className="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+        <div className="">
           <div className="card shadow border-0">
             <div
               className="card-header text-white text-center"

@@ -60,3 +60,24 @@ export const login = (data) => {
     }
   };
   
+export const forgottenPassword = async (data) => {
+  try {
+    return await apiClient.post("/user/restablecer-password", data);
+  } catch (e) {
+    return {
+      error: true,
+      e,
+    };
+ }
+};
+
+export const updatePassword = async (data) => {
+  try {
+    return await apiClient.post("/user/update-password", data); 
+  } catch (e) {
+    return {
+      error: true,
+      e,
+    };
+  }
+};

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Agrega esta línea
-import { useRegister } from "../shared/hooks/useRegister";
+import { useNavigate } from "react-router-dom";
+import { useRegister } from "../../../shared/hooks/useRegister";
 
 export const Register = () => {
   const [form, setForm] = useState({
@@ -10,7 +10,10 @@ export const Register = () => {
     foto: null,
   });
   const { handleRegister, loading, error, success } = useRegister();
-  const navigate = useNavigate(); // Agrega esta línea
+  const navigate = useNavigate();
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => setPasswordVisible((prev) => !prev);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -35,15 +38,13 @@ export const Register = () => {
     if (success) {
       setTimeout(() => {
         navigate("/login");
-      }, 1500); // Espera 1.5 segundos para mostrar el mensaje de éxito
+      }, 150);
     }
   }, [success, navigate]);
 
-  // ...existing code...
   return (
     <div className="container d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
       <div className="card shadow" style={{ maxWidth: 400, width: "100%", borderRadius: 8, padding: 0 }}>
-        {/* Encabezado con fondo y bordes redondeados arriba */}
         <div
           className="text-center"
           style={{
@@ -89,17 +90,28 @@ export const Register = () => {
             </div>
             <div className="mb-3">
               <label htmlFor="password" className="form-label">Contraseña</label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                className="form-control"
-                placeholder="Contraseña (mínimo 8 caracteres)"
-                value={form.password}
-                onChange={handleChange}
-                required
-                minLength={8}
-              />
+              <div className="input-group position-relative">
+                <input
+                  id="password"
+                  name="password"
+                  type={passwordVisible ? "text" : "password"}
+                  className="form-control"
+                  placeholder="Contraseña (mínimo 8 caracteres)"
+                  value={form.password}
+                  onChange={handleChange}
+                  required
+                  minLength={8}
+                />
+                <button
+                  type="button"
+                  className="position-absolute top-50 end-0 translate-middle-y btn btn-link"
+                  onClick={togglePasswordVisibility}
+                  style={{ zIndex: 1 }}
+                  tabIndex={-1}
+                >
+                  {passwordVisible ? "🙈" : "👁️"}
+                </button>
+              </div>
             </div>
             <div className="mb-3">
               <label htmlFor="foto" className="form-label">Foto de perfil (opcional)</label>

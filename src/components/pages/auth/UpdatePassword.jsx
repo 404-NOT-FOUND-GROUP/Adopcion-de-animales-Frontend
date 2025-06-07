@@ -1,17 +1,38 @@
-import { useActualizaContraseña } from "../shared/hooks/useActualiza";
+import { useState } from "react";
+import { useUpdatePassword } from "../../../shared/hooks/useUpdatePassword";
+import { useLocation } from "react-router-dom";
 
-export const ActualizaContraseña = () => {
-  const {
-    newPassword,
-    setNewPassword,
-    isLoading,
-    actualizarContraseña,
-  } = useActualizaContraseña();
+export const UpdatePassword = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const resetToken = queryParams.get("token");
+
+  const [newPassword, setNewPassword] = useState("");
+  const { handleUpdatePassword, loading: isLoading } = useUpdatePassword();
+
+  const actualizarContraseña = async (e) => {
+    e.preventDefault();
+
+    if (!resetToken) {
+      alert("Token de restablecimiento no encontrado en la URL");
+      return;
+    }
+
+    await handleUpdatePassword({ resetToken, newPassword });
+  };
 
   return (
-    <div className="container" style={{ marginTop: "3rem", marginBottom: "3rem", paddingLeft: "1rem", paddingRight: "1rem" }}>
+    <div
+      className="container"
+      style={{
+        marginTop: "3rem",
+        marginBottom: "3rem",
+        paddingLeft: "1rem",
+        paddingRight: "1rem",
+      }}
+    >
       <div className="row justify-content-center">
-        <div className="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+        <div className="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-12">
           <div className="card shadow border-0">
             <div
               className="card-header text-white text-center"
