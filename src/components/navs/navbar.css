@@ -14,7 +14,6 @@
   flex-direction: column;
 }
 
-/* Secciones internas del navbar superior */
 .navbar-top {
   display: flex;
   align-items: center;
@@ -23,7 +22,6 @@
   width: 100%;
 }
 
-/* Cada sección ocupa el mismo espacio para que el centro se mantenga centrado */
 .navbar-section {
   flex: 1;
   display: flex;
