@@ -5,6 +5,7 @@ import {Register} from "../pages/auth/Register.jsx"
 import { FogottenPassword } from "../pages/auth/ForgottenPassword.jsx";
 import { UpdatePassword } from "../pages/auth/UpdatePassword.jsx";
 
+
 // Importaciones de los componentes de rutas protegidas y públicas aquí
 
 import { Unauthorized } from "../pages/unauthorized/Unauthorized.jsx";
@@ -13,6 +14,7 @@ export const Content = () => {
     return (
         <Routes>
         {/* Rutas públicas */}
+
 
         {
         <Route path="/register" element={<Register />} />
@@ -23,6 +25,11 @@ export const Content = () => {
         {
         <Route path="/actualiza" element={<UpdatePassword/>}/>
         }
+
+        {/* EJEMPLO DE RUTA PÚBLICA
+        <Route path="/register" element={<Register />} />
+        */}
+
 
         {/* Rutas protegidas solo para ADMIN */}
         
