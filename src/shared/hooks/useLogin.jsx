@@ -21,14 +21,15 @@ export const useLogin = () => {
 
     try {
       const response = await loginRequest(form);
-      const { token, role } = response.data.userDetails;
+      const { token, role} = response.data.userDetails;
 
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
       localStorage.setItem("user", JSON.stringify(response.data.userDetails));
+      localStorage.setItem("isLoggedIn", "true");
 
       toast.success("Inicio de sesión exitoso");
-      setTimeout(() => navigate("/dashboard"), 1200);
+      setTimeout(() => navigate("/dashboard"), 150);
     } catch (error) {
       const errorMessage =
         error.response?.data?.error || "Credenciales inválidas";
