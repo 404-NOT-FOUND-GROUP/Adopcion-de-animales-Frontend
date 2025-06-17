@@ -12,28 +12,31 @@ export const QuienesSomos = () => {
   return (
     <div className="quienes-container">
       <div className="quienes-card">
+
+        {/* Título y descripción */}
         <h1 className="quienes-title">🌟 ¿Quiénes Somos?</h1>
         <p className="quienes-description">
-          Somos <strong>404-ADOPTION</strong>, una plataforma dedicada a conectar mascotas sin hogar
-          con personas responsables y amorosas. Nuestro objetivo es facilitar el proceso de adopción
-          y promover el bienestar animal.
+          En <strong>404-ADOPTION</strong> conectamos mascotas sin hogar con personas responsables y amorosas.
         </p>
 
-        <section className="quienes-seccion">
-          <h3>🐶 Misión</h3>
-          <p>
-            Brindar una segunda oportunidad a cada mascota, asegurando que encuentren un hogar
-            lleno de cariño y responsabilidad.
-          </p>
-        </section>
+        {/* Imagen debajo del párrafo */}
+        <div className="quienes-imagen-central">
+          <img src="/ruta-a-la-imagen.jpg" alt="Mascotas felices" />
+        </div>
 
-        <section className="quienes-seccion">
-          <h3>🐾 Visión</h3>
-          <p>
-            Ser la red de adopción más confiable, transparente y accesible para todos aquellos
-            que desean cambiar la vida de un animal.
-          </p>
-        </section>
+        {/* Segunda sección: ¿A qué nos dedicamos? */}
+        <div className="quienes-dedicamos">
+          <div className="dedicamos-texto">
+            <h2>❓¿A qué nos dedicamos?</h2>
+            <p>
+              Nuestro compromiso es encontrar hogares seguros para animales abandonados,
+              facilitar el proceso de adopción y educar sobre tenencia responsable.
+            </p>
+          </div>
+          <div className="dedicamos-imagen">
+            <img src="/ruta-a-la-segunda-imagen.jpg" alt="Adopción responsable" />
+          </div>
+        </div>
 
         <div className="quienes-volver">
           <button className="quienes-btn" onClick={volverInicio}>
