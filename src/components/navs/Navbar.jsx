@@ -153,7 +153,7 @@ export const Navbar = () => {
 
         <button
           className="navbar-link-btn"
-          onClick={() => handleNavigate('/')}
+          onClick={() => handleNavigate('/quienes-somos')}
           aria-label="Quiénes somos"
           type="button"
         >

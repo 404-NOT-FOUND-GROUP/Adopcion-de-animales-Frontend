@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
+
+.ayuda-container {
+  margin-top: 2px;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 80vh;
+  background-color: #ffffff;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.ayuda-card {
+  background: linear-gradient(145deg, #f0fdfc, #ffffff);
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 850px;
+  color: #333;
+}
+
+.ayuda-title {
+  font-size: 2.3rem;
+  margin-bottom: 1rem;
+  color: #0077cc;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ayuda-description {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+.ayuda-seccion {
+  margin-bottom: 2rem;
+}
+
+.ayuda-seccion h3 {
+  color: #00bcd4;
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.ayuda-seccion p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.ayuda-volver {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.ayuda-btn {
+  background-color: #00c9ff;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.ayuda-btn:hover {
+  background-color: #0077cc;
+  transform: scale(1.03);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .ayuda-card {
+    padding: 2rem;
+  }
+
+  .ayuda-title {
+    font-size: 2rem;
+  }
+
+  .ayuda-description,
+  .ayuda-seccion p {
+    font-size: 1rem;
+  }
+
+  .ayuda-seccion h3 {
+    font-size: 1.2rem;
+  }
+}
