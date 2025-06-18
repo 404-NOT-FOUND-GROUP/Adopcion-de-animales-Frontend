@@ -88,7 +88,7 @@ export const Login = () => {
                   type="button"
                   className="btn btn-light w-100 border d-flex align-items-center justify-content-center"
                   style={{ fontWeight: 500 }}
-                  onClick={() => window.location.href = "https://accounts.google.com/signin"}
+                  onClick={() => window.location.href = "http://localhost:3000/auth/google"}
                 >
                   Inicia sesión con Google
                 </button>
