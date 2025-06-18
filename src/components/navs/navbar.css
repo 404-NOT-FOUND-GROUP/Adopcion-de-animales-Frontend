@@ -29,6 +29,14 @@
   height: 100%;
 }
 
+.navbar-container {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+
 /* Logo izquierda */
 .nav-logo {
   width: 100px;
@@ -242,4 +250,27 @@
   50% {
     transform: translateY(-6px);
   }
+}
+
+/* Asegura que el nav ocupe todo el ancho */
+.full-width-navbar {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw; /* asegura que ocupe todo el viewport horizontal */
+  box-sizing: border-box;
+}
+
+/* Apaga todo margen global del body o html */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Asegura que todo el contenido dentro del navbar esté alineado sin espacio */
+.navbar-top,
+.navbar-section,
+.navbar-buttons-bar {
+  margin: 0 !important;
+  padding: 0 !important;
 }

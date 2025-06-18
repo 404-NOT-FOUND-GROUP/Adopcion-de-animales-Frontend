@@ -79,7 +79,7 @@ export const Navbar = () => {
 
   return (
     <>
-      <nav className="custom-navbar container-fluid d-flex flex-column">
+      <nav className="custom-navbar full-width-navbar d-flex flex-column">
         <div className="navbar-top d-flex align-items-center w-100">
           <div className="navbar-section left">
             <NavLogo />

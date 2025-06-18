@@ -1,46 +1,87 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './quienesSomos.css';
+import { Navbar } from '../navs/Navbar'; // Asegúrate de que la ruta sea correcta
 
 export const QuienesSomos = () => {
   const navigate = useNavigate();
 
-  const volverInicio = () => {
-    navigate('/');
-  };
+  const leftIcons = ['🐶', '🐾', '🐱', '🐾'];
+  const rightIcons = ['🐱', '🐾', '🐶', '🐾'];
 
   return (
-    <div className="quienes-container">
-      <div className="quienes-card">
+    <div className="quienes-somos-container">
+      {/* NavBar en la parte superior */}
+      <Navbar />
 
-        {/* Título y descripción */}
-        <h1 className="quienes-title">🌟 ¿Quiénes Somos?</h1>
-        <p className="quienes-description">
-          En <strong>404-ADOPTION</strong> conectamos mascotas sin hogar con personas responsables y amorosas.
-        </p>
+      {/* LADO IZQUIERDO */}
+      <div className="iconos-flotantes izquierda-flotantes">
+        {[...Array(12)].map((_, i) => (
+          <span key={`izq-${i}`} className="emoji-float" style={{ '--i': i }}>
+            {leftIcons[i % leftIcons.length]}
+          </span>
+        ))}
+      </div>
 
-        {/* Imagen debajo del párrafo */}
-        <div className="quienes-imagen-central">
-          <img src="/ruta-a-la-imagen.jpg" alt="Mascotas felices" />
-        </div>
+      {/* LADO DERECHO */}
+      <div className="iconos-flotantes derecha-flotantes">
+        {[...Array(12)].map((_, i) => (
+          <span key={`der-${i}`} className="emoji-float" style={{ '--i': i }}>
+            {rightIcons[i % rightIcons.length]}
+          </span>
+        ))}
+      </div>
 
-        {/* Segunda sección: ¿A qué nos dedicamos? */}
-        <div className="quienes-dedicamos">
-          <div className="dedicamos-texto">
-            <h2>❓¿A qué nos dedicamos?</h2>
+      {/* CONTENIDO PRINCIPAL */}
+      <div className="contenido-quienes">
+        <section className="bloque-info">
+          <img src="bulldogPeluca.jpg" alt="¿Quiénes somos?" />
+          <div>
+            <h2>¿Quiénes somos?</h2>
             <p>
-              Nuestro compromiso es encontrar hogares seguros para animales abandonados,
-              facilitar el proceso de adopción y educar sobre tenencia responsable.
+              Somos una organización comprometida con el bienestar animal. Nuestra misión es rescatar,
+              proteger y encontrar hogares amorosos para perritos y gatitos en situación de abandono.
             </p>
           </div>
-          <div className="dedicamos-imagen">
-            <img src="/ruta-a-la-segunda-imagen.jpg" alt="Adopción responsable" />
-          </div>
-        </div>
+        </section>
 
-        <div className="quienes-volver">
-          <button className="quienes-btn" onClick={volverInicio}>
-            Volver a Inicio
+        <section className="bloque-info reverse">
+          <img src="gatoNaranja.jpg" alt="¿A qué nos dedicamos?" />
+          <div>
+            <h2>¿A qué nos dedicamos?</h2>
+            <p>
+              Nos enfocamos en fomentar la adopción responsable, brindar atención médica a los animales
+              rescatados y educar a la comunidad sobre el respeto hacia los animales.
+            </p>
+          </div>
+        </section>
+
+        <section className="bloque-info">
+          <img src="mascotas.jpg" alt="Misión" />
+          <div>
+            <h2>Misión</h2>
+            <p>
+              Salvar la mayor cantidad de vidas animales posibles, promoviendo la adopción, el cuidado y
+              el amor hacia nuestros compañeros peludos.
+            </p>
+          </div>
+        </section>
+
+        <section className="bloque-info reverse">
+          <img src="perroFeliz.jpg" alt="Visión" />
+          <div>
+            <h2>Visión</h2>
+            <p>
+              Ser la red de adopción más confiable y reconocida, donde cada mascota tenga una segunda
+              oportunidad en un hogar lleno de cariño.
+            </p>
+          </div>
+        </section>
+
+        {/* Botón de regreso al final */}
+        <div className="btn-regresar-container">
+          <button className="btn-regresar" onClick={() => navigate(-1)}>
+            ← Regresar
           </button>
         </div>
       </div>
