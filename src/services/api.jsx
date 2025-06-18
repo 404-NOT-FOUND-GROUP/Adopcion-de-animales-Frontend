@@ -81,3 +81,12 @@ export const updatePassword = async (data) => {
     };
   }
 };
+
+
+// modulo de macotas 
+
+
+export const getAllPets = async () => {
+  const res = await apiClient.get('/pet/getPets');
+  return res.data;
+};
