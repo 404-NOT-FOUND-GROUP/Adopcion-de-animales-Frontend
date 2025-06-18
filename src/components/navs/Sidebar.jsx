@@ -79,6 +79,16 @@ export const Sidebar = () => {
             )}
           </div>
 
+          {/* Botón de bandeja de mensajes */}
+          <div className="sidebar-section">
+            <div
+              className="sidebar-title clickable"
+              onClick={() => goTo("/inbox")}
+            >
+              <span>📥 Bandeja de mensajes</span>
+            </div>
+          </div>
+
         </div>
       </div>
     </>

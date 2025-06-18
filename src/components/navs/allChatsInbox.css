@@ -1,0 +1,61 @@
+.inbox-container {
+  max-width: 500px;
+  margin: 40px auto;
+  background: linear-gradient(120deg, #f8fafc 0%, #e0e7ff 100%);
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(100, 125, 238, 0.10);
+  padding: 2rem;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.inbox-title {
+  font-size: 1.4rem;
+  color: #647dee;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+.inbox-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.inbox-item {
+  padding: 1rem;
+  border-radius: 12px;
+  background: #fff;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  box-shadow: 0 2px 8px rgba(100, 125, 238, 0.06);
+}
+
+.inbox-item:hover {
+  background: #e0e7ff;
+}
+
+.inbox-user {
+  font-weight: bold;
+  color: #7f53ac;
+}
+
+.inbox-lastmsg {
+  color: #333;
+  font-size: 1rem;
+}
+
+.inbox-date {
+  color: #888;
+  font-size: 0.85rem;
+  text-align: right;
+}
+
+.inbox-empty, .inbox-loading {
+  text-align: center;
+  color: #888;
+  margin-top: 2rem;
+}
