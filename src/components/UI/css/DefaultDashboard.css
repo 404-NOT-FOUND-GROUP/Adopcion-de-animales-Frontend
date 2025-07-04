@@ -1,5 +1,11 @@
-/* Estructura principal */
+/* Box sizing global */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
+/* Estructura principal */
 body {
   margin: 0;
   padding: 0;
@@ -25,13 +31,12 @@ body {
 
 .dashboard-content {
   flex: 1;
-  padding: 200px 2rem 2rem;
+  padding: clamp(1rem, 10vw, 12rem) 2rem 2rem;
   overflow-y: auto;
   background: rgba(255, 255, 255, 0.85); /* blanco con 85% de opacidad */
   backdrop-filter: blur(4px); /* efecto vidrio borroso (opcional pero bonito) */
   border-radius: 16px; /* opcional para suavizar bordes */
 }
-
 
 .dashboard-center-box {
   max-width: 1600px;
@@ -96,6 +101,9 @@ body {
 .adopt-image-container {
   flex: 1;
   max-width: 500px;
+  max-width: 100%;
+  height: auto;
+  box-sizing: border-box;
 }
 
 .adopt-image-container img {
@@ -103,6 +111,9 @@ body {
   border-radius: 20px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease;
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 .adopt-image-container img:hover {
@@ -148,6 +159,9 @@ body {
   width: 100%;
   display: block;
   object-fit: cover;
+  max-width: 100%;
+  height: auto;
+  box-sizing: border-box;
 }
 
 .recommendation-text {
@@ -179,6 +193,9 @@ body {
   width: 100%;
   box-shadow: 0 10px 20px rgba(233, 30, 99, 0.5);
   animation: pulseFuchsia 3s ease-in-out infinite alternate;
+  max-width: 100%;
+  height: auto;
+  box-sizing: border-box;
 }
 
 .image-container img {
@@ -186,6 +203,8 @@ body {
   border-radius: 12px;
   display: block;
   object-fit: cover;
+  max-width: 100%;
+  height: auto;
 }
 
 /* Caja de texto especial */
@@ -315,6 +334,9 @@ body {
   box-shadow: 0 10px 20px rgba(0, 188, 212, 0.5);
   animation: pulseTurquoise 3s ease-in-out infinite alternate;
   order: 2; /* Imagen al lado derecho */
+  max-width: 100%;
+  height: auto;
+  box-sizing: border-box;
 }
 
 .turquoise-message-image img {
@@ -322,6 +344,8 @@ body {
   border-radius: 12px;
   display: block;
   object-fit: cover;
+  max-width: 100%;
+  height: auto;
 }
 
 .turquoise-message-text {
@@ -335,7 +359,6 @@ body {
   text-align: center;
   order: 1; /* Texto al lado izquierdo */
 }
-
 
 .turquoise-message-text h3 {
   font-size: 4rem;
@@ -357,6 +380,7 @@ body {
   }
 }
 
+/* Media Queries para responsividad */
 @media (max-width: 1024px) {
   .special-text h3,
   .turquoise-message-text h3 {
@@ -466,8 +490,15 @@ body {
     font-size: 1rem;
   }
 
+  .recommendation-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
   .recommendation-item {
     flex: 1 1 100%;
+    max-width: 100%;
   }
 
   .adoption-message-box {
