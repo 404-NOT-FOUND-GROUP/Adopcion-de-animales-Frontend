@@ -356,3 +356,132 @@ body {
     box-shadow: 0 12px 24px rgba(0, 188, 212, 0.8);
   }
 }
+
+@media (max-width: 1024px) {
+  .special-text h3,
+  .turquoise-message-text h3 {
+    font-size: 3rem;
+  }
+
+  .special-text p,
+  .turquoise-message-text p {
+    font-size: 1.2rem;
+  }
+
+  .adopt-flex {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .adopt-image-container {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-content {
+    padding: 100px 1rem 2rem;
+  }
+
+  .special-text,
+  .turquoise-message-text {
+    transform: none;
+    opacity: 1;
+    animation: none;
+  }
+
+  .image-container,
+  .turquoise-message-image {
+    max-width: 100%;
+    padding: 15px;
+  }
+
+  .recommendation-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .recommendation-item {
+    max-width: 90%;
+  }
+
+  .special-text h3,
+  .turquoise-message-text h3 {
+    font-size: 2.2rem;
+  }
+
+  .special-text p,
+  .turquoise-message-text p {
+    font-size: 1rem;
+  }
+
+  .adoption-message-box {
+    padding: 25px;
+  }
+
+  .adoption-message-text h2 {
+    font-size: 1.7rem;
+  }
+
+  .adoption-message-text p,
+  .adoption-benefits li {
+    font-size: 1rem;
+  }
+
+  .turquoise-message-box,
+  .special-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .turquoise-message-image,
+  .image-container {
+    order: 0;
+  }
+
+  .turquoise-message-text,
+  .special-text {
+    order: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-title {
+    font-size: 1.8rem;
+  }
+
+  .welcome-text {
+    font-size: 1rem;
+  }
+
+  .dashboard-content {
+    padding-top: 60px;
+  }
+
+  .adopt-text h2 {
+    font-size: 1.5rem;
+  }
+
+  .adopt-text p {
+    font-size: 1rem;
+  }
+
+  .recommendation-item {
+    flex: 1 1 100%;
+  }
+
+  .adoption-message-box {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .turquoise-message-text h3,
+  .special-text h3 {
+    font-size: 1.8rem;
+  }
+
+  .turquoise-message-text p,
+  .special-text p {
+    font-size: 1rem;
+  }
+}

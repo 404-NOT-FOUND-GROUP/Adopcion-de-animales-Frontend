@@ -2,7 +2,7 @@
 
 .sidebar-container {
   position: fixed;
-  top: 110px; /* Subido para que quede justo debajo del navbar */
+  top: 110px; /* Justo debajo del navbar */
   left: 0;
   width: 260px;
   height: calc(100vh - 70px);
@@ -16,6 +16,7 @@
   border-top-right-radius: 10px;
 }
 
+/* Sidebar colapsada (oculta) */
 .sidebar-container.collapsed {
   transform: translateX(-100%);
 }
@@ -33,6 +34,7 @@
   border-radius: 10px;
   font-weight: bold;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .sidebar-toggle-btn:hover {
@@ -122,22 +124,87 @@
   }
 }
 
-@media (max-width: 768px) {
+/* --- Responsive para tablets y celulares --- */
+@media (max-width: 1024px) {
   .sidebar-container {
-    width: 200px;
+    width: 220px;
     padding: 0.8rem;
+    top: 90px;
+    height: calc(100vh - 90px);
   }
 
   .sidebar-toggle-btn {
-    font-size: 1rem;
-    padding: 6px 10px;
-  }
-
-  .sidebar-header {
+    top: 95px;
+    left: 8px;
+    padding: 7px 12px;
     font-size: 1.1rem;
   }
 
-  .sidebar-item, .sidebar-subitem {
+  .sidebar-header {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .sidebar-title {
+    font-size: 1.05rem;
+  }
+
+  .sidebar-title.clickable {
+    font-size: 1.1rem;
+  }
+
+  .sidebar-subitem {
     font-size: 0.9rem;
+  }
+}
+
+/* --- Responsive para móviles --- */
+@media (max-width: 768px) {
+  .sidebar-container {
+    position: fixed;
+    top: 60px; /* más arriba para navbar más pequeño o oculto */
+    left: 0;
+    width: 180px;
+    height: calc(100vh - 60px);
+    padding: 0.6rem;
+    border-top-right-radius: 8px;
+    box-shadow: 3px 0 10px rgba(0,0,0,0.15);
+    z-index: 1500;
+  }
+
+  .sidebar-container.collapsed {
+    transform: translateX(-100%);
+  }
+
+  .sidebar-toggle-btn {
+    top: 65px;
+    left: 5px;
+    padding: 6px 10px;
+    font-size: 1rem;
+  }
+
+  .sidebar-header {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .sidebar-title {
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+
+  .sidebar-title.clickable {
+    font-size: 1rem;
+    padding: 4px;
+  }
+
+  .sidebar-subitem {
+    font-size: 0.85rem;
+    padding: 5px;
+  }
+
+  .sidebar-section {
+    padding: 10px;
+    border-radius: 12px;
   }
 }
