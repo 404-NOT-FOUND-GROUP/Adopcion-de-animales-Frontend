@@ -143,6 +143,7 @@ export const Navbar = () => {
 
       <div className="navbar-buttons-bar">
         <button
+<<<<<<< Updated upstream:src/components/navs/Navbar.jsx
         className="navbar-link-btn"
         onClick={() => handleNavigate('/ayuda')}
         aria-label="Ayuda"
@@ -152,6 +153,8 @@ export const Navbar = () => {
       </button> 
 
         <button
+=======
+>>>>>>> Stashed changes:src/components/nav/NavBar.jsx
           className="navbar-link-btn"
           onClick={() => handleNavigate('/quienes-somos')}
           aria-label="Quiénes somos"
@@ -159,6 +162,19 @@ export const Navbar = () => {
         >
           🏠 Quiénes somos
         </button>
+<<<<<<< Updated upstream:src/components/navs/Navbar.jsx
+=======
+
+        <button
+          className="navbar-link-btn"
+          onClick={() => handleNavigate('/mascotas')}
+          aria-label="Listar mascotas"
+          type="button"
+        >
+          🐾 Mascotas
+          
+        </button>
+>>>>>>> Stashed changes:src/components/nav/NavBar.jsx
       </div>
     </>
   );

@@ -1,0 +1,129 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url("../../../assets/background.png");
+  background-size: 300px;
+  background-repeat: repeat;
+  background-position: center;
+}
+
+.quienes-somos-container {
+  position: relative;
+  min-height: 80vh;
+  background: rgba(255, 255, 255, 0.85);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.iconos-flotantes {
+  position: fixed;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+.izquierda-flotantes {
+  left: 10px;
+}
+
+.derecha-flotantes {
+  right: 10px;
+}
+
+.emoji-float {
+  font-size: 24px;
+  animation: flotar 4s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * 0.3s);
+}
+
+@keyframes flotar {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-15px);
+  }
+}
+
+.contenido-central {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 80px 20px 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.titulo-principal {
+  font-size: 36px;
+  color: #f72d89;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.descripcion {
+  text-align: center;
+  font-size: 18px;
+  color: #444;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.subtitulo {
+  color: #00aeb8;
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.grid-objetivos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.card-objetivo {
+  background-color: #e8f9f8;
+  border-left: 6px solid #91d100;
+  border-radius: 12px;
+  padding: 20px;
+  transition: transform 0.3s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.card-objetivo:hover {
+  transform: scale(1.03);
+}
+
+.card-objetivo h3 {
+  margin-bottom: 10px;
+  color: #00aeb8;
+  font-size: 18px;
+}
+
+.card-objetivo p {
+  color: #333;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.btn-regresar-container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.btn-regresar {
+  background-color: #f72d89;
+  color: white;
+  padding: 10px 30px;
+  font-size: 16px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-regresar:hover {
+  background-color: #d02170;
+}
