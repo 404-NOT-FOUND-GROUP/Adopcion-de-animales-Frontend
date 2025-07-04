@@ -75,7 +75,7 @@ export const DefaultDashboard = () => {
           <br />
           {/* Hero */}
           <section className="dashboard-hero welcome-section">
-            <h1 className="hero-title welcome-title">Bienvenido a Nuestro Albergue</h1>
+            <h1 className="hero-title welcome-title">Bienestar Animal</h1>
             <p className="hero-subtitle welcome-text">
               Donde cada mascota tiene una historia y una segunda oportunidad.
             </p>

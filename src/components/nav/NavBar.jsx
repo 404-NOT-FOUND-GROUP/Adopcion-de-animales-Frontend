@@ -158,15 +158,6 @@ export const NavBar = () => {
       <div className="navbar-buttons-bar">
         <button
           className="navbar-link-btn"
-          onClick={() => handleNavigate('/ayuda')}
-          aria-label="Ayuda"
-          type="button"
-        >
-          ❓ Ayuda
-        </button>
-
-        <button
-          className="navbar-link-btn"
           onClick={() => handleNavigate('/quienes-somos')}
           aria-label="Quiénes somos"
           type="button"
@@ -181,6 +172,7 @@ export const NavBar = () => {
           type="button"
         >
           🐾 Mascotas
+          
         </button>
       </div>
     </>
