@@ -1,0 +1,214 @@
+/* --- Contenedor general del carrusel --- */
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 820px; /* Igual que PetList */
+  margin: 2rem auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+/* Quitar flex-column para que slides estén en fila */
+.carousel-slide {
+  overflow: visible !important;
+  padding-bottom: 1rem;
+}
+
+/* Cada slide como bloque centrado */
+.slick-slide {
+  display: block !important;
+}
+
+.slick-slide > div {
+  margin: auto;
+  max-width: 320px; /* Igual que ancho tarjeta en PetList */
+}
+
+/* --- Tarjeta de mascota --- */
+.pet-box {
+  background-color: #fff;
+  border-radius: 18px; /* Igual que PetList */
+  padding: 1.5rem 1.2rem;
+  box-shadow: 0 4px 18px rgba(0, 201, 255, 0.10),
+    0 1.5px 6px rgba(0, 0, 0, 0.06);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  width: 100%;
+  text-align: center;
+  border: 2px solid #e0f7fa; /* borde celeste claro */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Hover igual que PetList */
+.pet-box:hover {
+  transform: translateY(-8px) scale(1.025);
+  box-shadow: 0 8px 32px rgba(0, 201, 255, 0.18),
+    0 3px 12px rgba(0, 0, 0, 0.10);
+  border-color: #00c9ff; /* celeste vivo */
+}
+
+/* --- Imagen de mascota --- */
+.pet-image {
+  width: 100%;
+  height: 220px; /* Igual que PetList */
+  object-fit: cover;
+  background: #f0f8ff;
+  border-bottom: 1px solid #e0f7fa;
+  border-radius: 16px 16px 0 0;
+  margin-bottom: 1rem;
+}
+
+/* --- Nombre --- */
+.pet-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #00bcd4;
+  margin-bottom: 0.3rem;
+  letter-spacing: 1px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* --- Información general --- */
+.pet-info {
+  color: #555;
+  font-size: 1.1rem;
+  margin-bottom: 0.2rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* --- Estado --- */
+.pet-status {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #009688; /* verde */
+  margin-bottom: 1rem;
+}
+
+/* --- Botones --- */
+.pet-buttons {
+  display: flex;
+  gap: 0.7rem;
+  width: 100%;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+/* --- Flechas del carrusel --- */
+.slick-prev,
+.slick-next {
+  width: 40px;
+  height: 40px;
+  z-index: 5;
+  background: #243c5a;
+  border-radius: 50%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+  transition: background 0.3s ease;
+  color: white;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+  background: #1b2a43;
+}
+
+.slick-prev::before,
+.slick-next::before {
+  display: none;
+}
+
+.slick-prev {
+  left: -45px;
+}
+
+.slick-next {
+  right: -45px;
+}
+
+/* --- Dots --- */
+.slick-dots {
+  display: flex !important;
+  justify-content: center;
+  gap: 12px;
+  padding: 15px 0;
+  margin: 0;
+  list-style: none;
+}
+
+.slick-dots li {
+  width: 40px;
+  height: 6px;
+  margin: 0;
+  padding: 0;
+}
+
+.slick-dots li button {
+  width: 100%;
+  height: 6px;
+  padding: 0;
+  border-radius: 4px;
+  background-color: #ccc;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.slick-dots li.slick-active button {
+  background-color: #01aeb9; /* celeste */
+  box-shadow: 0 0 8px rgba(1, 174, 185, 1);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .slick-slide > div {
+    max-width: 320px;
+  }
+
+  .pet-image {
+    height: 180px;
+  }
+}
+
+.pet-button-ver-mas {
+  min-width: 90px;
+  font-weight: 500;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px 0 rgba(0, 201, 255, 0.08);
+  background-color: transparent;
+  border: 1.5px solid #555;
+  color: #333;
+  padding: 0.375rem 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.pet-button-ver-mas:hover {
+  background-color: #00bcd4;
+  border-color: #00bcd4;
+  color: white;
+}
+
+.pet-button-adoptar {
+  min-width: 90px;
+  font-weight: 500;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #00c9ff 0%, #92fe9d 100%);
+  border: none;
+  color: #fff;
+  padding: 0.375rem 0.75rem;
+  cursor: pointer;
+  box-shadow: 0 1px 4px 0 rgba(0, 201, 255, 0.3);
+  transition: filter 0.2s;
+}
+
+.pet-button-adoptar:hover {
+  filter: brightness(1.1);
+}
