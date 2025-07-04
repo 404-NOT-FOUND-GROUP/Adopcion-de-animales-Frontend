@@ -3,46 +3,55 @@ import { login as loginRequest } from "../../services/api";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-export const useLogin = () => {
-  const [isLoading, setIsLoading] = useState(false);
+export const useLogin = (onLoginSuccess) => {
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const login = async (email, password) => {
-    setIsLoading(true);
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
     try {
-      const result = await loginRequest({ email, password });
+      const result = await loginRequest({ email: form.email, password: form.password });
 
       if (result.error) {
         toast.error("Credenciales inválidas");
-        return null;
+        setLoading(false);
+        return;
       }
 
-      const { token, user } = result.data;
-      localStorage.setItem("token", token);
-      sessionStorage.setItem("userDetails", JSON.stringify(user));
+      const { userDetails } = result.data;
+      const { token, role } = userDetails;
+      localStorage.setItem("userDetails", JSON.stringify({ token, role }));
 
       toast.success("Inicio de sesión exitoso");
-      navigate("/dashboard");
-      return user;
+      if (typeof onLoginSuccess === "function") {
+        onLoginSuccess();
+      } else {
+        navigate("/DefaultDashboard");
+      }
     } catch (err) {
-      console.error("Login error:", err);
-      toast.error("Error de red");
-      return null;
+      toast.error("Error de red", err);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   const logout = () => {
-    sessionStorage.removeItem("userDetails");
-    localStorage.removeItem("token");
+    localStorage.removeItem("userDetails");
     navigate("/login");
     toast.success("Has cerrado sesión con éxito");
   };
 
   return {
-    login,
+    form,
+    loading,
+    handleChange,
+    handleSubmit,
     logout,
-    isLoading,
   };
 };

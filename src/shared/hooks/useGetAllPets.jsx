@@ -11,12 +11,12 @@ export const useGetAllPets = () => {
     try {
       const result = await getAllPetsRequest();
 
-      if (result.error) {
+      if (!result.success) {
         toast.error("Error al obtener las mascotas");
         return;
       }
 
-      setPets(result.data);
+      setPets(result.pets || []);
     } catch (err) {
       console.error("Get All Pets error:", err);
       toast.error("Error de red");

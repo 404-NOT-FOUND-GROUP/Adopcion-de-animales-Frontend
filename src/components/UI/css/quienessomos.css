@@ -1,0 +1,187 @@
+.quienes-somos-container {
+  position: relative;
+  padding: 130px 3rem 3rem;
+  background: linear-gradient(180deg, #ffffff, #f0f9ff);
+  overflow: hidden;
+  font-family: 'Quicksand', sans-serif;
+}
+
+/* Botón regresar */
+.btn-regresar {
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0, 119, 204, 0.4);
+  margin-top: 2rem;
+}
+
+
+/* Animaciones de gatitos, perritos y papitas */
+.iconos-flotantes {
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.izquierda-flotantes {
+  left: 0;
+}
+
+.derecha-flotantes {
+  right: 0;
+}
+
+.emoji-float {
+  font-size: 2.5rem;
+  opacity: 0.6;
+  animation: subir 8s linear infinite;
+  animation-delay: calc(var(--i) * 1s);
+  user-select: none;
+}
+
+@keyframes subir {
+  0% {
+    transform: translateY(100vh) scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(50vh) scale(1.1);
+  }
+  100% {
+    transform: translateY(-20vh) scale(0.8);
+    opacity: 0;
+  }
+}
+
+/* Bloques de contenido */
+.contenido-quienes {
+  z-index: 2;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Bloque con imagen a la izquierda y texto a la derecha, centrado */
+.bloque-info.centrado {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  justify-content: center;
+  background-color: #ffffffcc;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0, 119, 204, 0.1);
+}
+
+.bloque-info.centrado img {
+  width: 320px;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.bloque-info.centrado div {
+  max-width: 460px;
+  text-align: right;
+}
+
+.bloque-info.centrado p {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 1.15rem;
+  color: #333;
+  max-width: 460px;
+}
+
+/* Bloques normales y reversos */
+.bloque-info {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background-color: #ffffffcc;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0, 119, 204, 0.1);
+}
+
+.bloque-info.reverse {
+  flex-direction: row-reverse;
+}
+
+.bloque-info img {
+  width: 300px;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.bloque-info h2 {
+  color: #0077cc;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Párrafos más cerrados con ancho máximo y justificados */
+.bloque-info p {
+  color: #333;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 420px;
+  text-align: justify;
+}
+
+/* Responsive - apilar en pantallas pequeñas */
+@media (max-width: 768px) {
+  .bloque-info,
+  .bloque-info.centrado {
+    flex-direction: column !important;
+    text-align: center !important;
+  }
+  .bloque-info.centrado div,
+  .bloque-info div {
+    max-width: 100% !important;
+    text-align: center !important;
+  }
+  .bloque-info img,
+  .bloque-info.centrado img {
+    width: 100%;
+    max-width: 350px;
+    margin-bottom: 1rem;
+  }
+}
+
+body, html, #root {
+  
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+* {
+  box-sizing: border-box !important;
+}
+
+.quienes-somos-container {
+  margin: 0 !important;
+  padding: 180px 0 0 0 !important;
+  width: 100% !important;
+  overflow-x: hidden !important;
+}

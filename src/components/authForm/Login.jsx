@@ -1,127 +1,117 @@
 import React, { useState } from "react";
-import { useLogin } from "../../shared/hooks/useLogin";
-import { useGoogleLogin } from "../../shared/hooks/useGoogleLogin";
-import toast from "react-hot-toast";
-import PropTypes from "prop-types";
+import { Link, useNavigate } from "react-router-dom";
+import { useLogin } from "../../shared/hooks/useLogin.jsx";
 
-export const Login = ({ switchAuthHandler, onForgotPassword }) => {
-  const { login, isLoading: isLoginLoading } = useLogin();
-  const { googleLogin, isLoading: isGoogleLoading } = useGoogleLogin();
+export const Login = () => {
+  const navigate = useNavigate();
+  const { form, loading, handleChange, handleSubmit } = useLogin(() => navigate("/dashboard"));
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
-  const [form, setForm] = useState({
-    email: { value: "", isValid: false, showError: false },
-    password: { value: "", isValid: false, showError: false },
-  });
-
-  const handleChange = (val, field) => {
-    setForm((prev) => ({ ...prev, [field]: { ...prev[field], value: val } }));
-  };
-
-  const handleBlur = (val, field) => {
-    let valid = false;
-    switch (field) {
-      case "email":
-        valid = /\S+@\S+\.\S+/.test(val);
-        break;
-      case "password":
-        valid = val.trim().length >= 8;
-        break;
-      default:
-        valid = true;
-    }
-    setForm((prev) => ({
-      ...prev,
-      [field]: { ...prev[field], isValid: valid, showError: !valid },
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const credentials = {
-      email: form.email.value.trim().toLowerCase(),
-      password: form.password.value,
-    };
-
-    login(credentials.email, credentials.password);
-  };
-
-  const allValid = form.email.isValid && form.password.isValid;
+  const togglePasswordVisibility = () => setPasswordVisible(!passwordVisible);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="mb-3">
-        <label htmlFor="email" className="form-label">
-          Correo Electrónico
-        </label>
-        <input
-          type="email"
-          className={`form-control ${form.email.showError ? "is-invalid" : ""}`}
-          id="email"
-          value={form.email.value}
-          onChange={(e) => handleChange(e.target.value, "email")}
-          onBlur={(e) => handleBlur(e.target.value, "email")}
-        />
-        {form.email.showError && (
-          <div className="invalid-feedback">El correo es obligatorio.</div>
-        )}
-      </div>
+    <div
+      className="table-responsive"
+      style={{
+        marginTop: "75px",
+        paddingBottom: "2rem",
+        minHeight: "calc(100vh - 100px)",
+        overflowY: "auto",
+      }}
+    >
+      <div
+        className="container d-flex justify-content-center align-items-start"
+        style={{ minHeight: "100vh", paddingTop: "10px" }}
+      >
+        <div className="row justify-content-center w-100">
+          <div
+            className="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5"
+            style={{ minWidth: "340px", maxWidth: "400px", margin: "0 auto" }}
+          >
+            <div className="card shadow border-0">
+              <div
+                className="card-header text-white text-center"
+                style={{ background: "#17486b", fontSize: "1.5rem", fontWeight: "bold" }}
+              >
+                Iniciar Sesión
+              </div>
 
-      <div className="mb-3">
-        <label htmlFor="password" className="form-label">
-          Contraseña
-        </label>
-        <input
-          type="password"
-          className={`form-control ${form.password.showError ? "is-invalid" : ""}`}
-          id="password"
-          value={form.password.value}
-          onChange={(e) => handleChange(e.target.value, "password")}
-          onBlur={(e) => handleBlur(e.target.value, "password")}
-        />
-        {form.password.showError && (
-          <div className="invalid-feedback">La contraseña debe tener al menos 8 caracteres.</div>
-        )}
-      </div>
+              <div className="card-body">
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-3">
+                    <label className="form-label">Correo electrónico</label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      name="email"
+                      value={form.email}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">Contraseña</label>
+                    <div className="position-relative">
+                      <input
+                        type={passwordVisible ? "text" : "password"}
+                        className="form-control"
+                        name="password"
+                        value={form.password}
+                        onChange={handleChange}
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="position-absolute top-50 end-0 translate-middle-y btn btn-link"
+                        onClick={togglePasswordVisibility}
+                        style={{ zIndex: 1 }}
+                        tabIndex={-1}
+                      >
+                        {passwordVisible ? "🙈" : "👁️"}
+                      </button>
+                    </div>
+                  </div>
+                  <button type="submit" className="btn btn-primary w-100" disabled={loading}>
+                    {loading ? "Logeando..." : "Iniciar Sesión"}
+                  </button>
+                </form>
 
-      <div className="d-flex justify-content-between">
-        <button
-          type="submit"
-          className={`btn btn-primary ${isLoginLoading ? "disabled" : ""}`}
-          disabled={!allValid || isLoginLoading}
-        >
-          {isLoginLoading ? "Iniciando..." : "Iniciar Sesión"}
-        </button>
-        <button
-          type="button"
-          className="btn btn-link"
-          onClick={onForgotPassword}
-        >
-          ¿Olvidaste tu contraseña?
-        </button>
-      </div>
+                <div className="text-center mt-3">
+                  <Link to="/olvido" className="text-decoration-underline" style={{ color: "#17486b" }}>
+                    ¿Olvidaste tu contraseña?
+                  </Link>
+                </div>
 
-      <div className="text-center mt-3">
-        <p>O inicia sesión con:</p>
-        <button
-          type="button"
-          className={`btn btn-danger ${isGoogleLoading ? "disabled" : ""}`}
-          onClick={googleLogin}
-        >
-          {isGoogleLoading ? "Iniciando con Google..." : "Google"}
-        </button>
-      </div>
+                <div className="d-flex align-items-center my-3">
+                  <div style={{ flex: 1, height: 1, background: "#ddd" }} />
+                  <span className="mx-2 text-muted" style={{ fontSize: "0.95rem" }}>o</span>
+                  <div style={{ flex: 1, height: 1, background: "#ddd" }} />
+                </div>
 
-      <div className="text-center mt-3">
-        ¿No tienes cuenta?{" "}
-        <button type="button" className="btn btn-link" onClick={switchAuthHandler}>
-          Regístrate
-        </button>
+                <button
+                  type="button"
+                  className="btn btn-light w-100 border d-flex align-items-center justify-content-center"
+                  style={{ fontWeight: 500 }}
+                  onClick={() => window.location.href = "http://localhost:3000/AdopcionDeAnimales/v1/auth/google"}
+                >
+                  Inicia sesión con Google
+                </button>
+
+                <div className="text-center mt-3 small">
+                  ¿No tienes cuenta?{" "}
+                  <button
+                    type="button"
+                    className="btn btn-link p-0"
+                    onClick={() => navigate("/register")}
+                  >
+                    Regístrate
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </form>
+    </div>
   );
-};
-
-Login.propTypes = {
-  switchAuthHandler: PropTypes.func.isRequired,
-  onForgotPassword: PropTypes.func.isRequired,
 };

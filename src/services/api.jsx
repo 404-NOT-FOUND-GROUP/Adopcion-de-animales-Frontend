@@ -1,4 +1,4 @@
-  import axios from "axios";
+import axios from "axios";
 
   const apiClient = axios.create({
     baseURL: "http://127.0.0.1:3000/AdopcionDeAnimales/v1",
@@ -6,7 +6,6 @@
     httpsAgent: false,
   });
 
-  // Interceptor para agregar el token JWT a las solicitudes
   apiClient.interceptors.request.use(
     (config) => {
       const token = localStorage.getItem("token");
@@ -21,7 +20,7 @@
   // Registro de usuario
   export const register = async (data) => {
     try {
-      return await apiClient.post("/auth/register", data); // Axios detecta FormData y pone el header correcto
+      return await apiClient.post("/auth/register", data); 
     } catch (e) {
       return {
         error: true,
@@ -93,56 +92,10 @@
       };
     }
   };
-
-  // Registrar nueva mascota
-  export const addPet = async (data) => {
+  // Obtener mascota por ID
+  export const getPetById = async (petId) => {
     try {
-      return await apiClient.post("/pet/addPet", data);
-    } catch (e) {
-      return {
-        error: true,
-        e,
-      };
-    }
-  };
-
-  // Formularios relacionados con mascotas
-
-  // Crear un nuevo formulario para una mascota
-  export const createForm = async (petId, data) => {
-    try {
-      return await apiClient.post(`/form/${petId}`, data);
-    } catch (e) {
-      return {
-        error: true,
-        e,
-      };
-    }
-  };
-
-  // Revisar un formulario existente
-  export const reviewForm = async (formId, data) => {
-    try {
-      return await apiClient.patch(`/form/${formId}`, data);
-    } catch (e) {
-      return {
-        error: true,
-        e,
-      };
-    }
-  };
-
-  // Funcionalidad de autenticación con Google
-
-  // Iniciar sesión con Google
-  export const googleLogin = async () => {
-    window.location.href = "http://127.0.0.1:3000/AdopcionDeAnimales/v1/auth/google";
-  };
-
-  // Solicitar el perfil del usuario autenticado
-  export const getAuthenticatedUser = async () => {
-    try {
-      const res = await apiClient.get("/auth/success");
+      const res = await apiClient.get(`/pet/findById/${petId}`);
       return res.data;
     } catch (e) {
       return {
@@ -152,12 +105,109 @@
     }
   };
 
-  // Cerrar sesión
-  export const logout = async () => {
+
+  // Registrar nueva mascota
+export const addPet = async (data) => {
+  try {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails")); 
+    if (!userDetails || !userDetails.token) {
+      throw new Error("No hay token válido en localStorage");
+    }
+
+    const token = userDetails.token;
+
+    const response = await axios.post(
+      "http://127.0.0.1:3000/AdopcionDeAnimales/v1/pet/addPet",
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error en addPet:", error);
+    return {
+      error: true,
+      message: error.message,
+    };
+  }
+};
+
+
+export const deletePetById = async (petId) => {
+  try {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    if (!userDetails || !userDetails.token) {
+      throw new Error("No hay token válido en localStorage");
+    }
+    const token = userDetails.token;
+
+    const response = await axios.delete(
+      `http://127.0.0.1:3000/AdopcionDeAnimales/v1/pet/deletePet/${petId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error en deletePetById:", error.response?.data || error.message);
+    return {
+      error: true,
+      message: error.message,
+    };
+  }
+};
+
+
+export const adoptPetById = async (petId, data) => {
+  try {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    if (!userDetails || !userDetails.token) {
+      throw new Error("No hay token válido en localStorage");
+    }
+
+    const token = userDetails.token;
+
+    const res = await apiClient.post(`/form/${petId}`, data, {
+
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+    return res.data;
+  } catch (error) {
+    console.error("Error en adoptPetById:", error.response?.data || error.message);
+    return {
+      error: true,
+      message: error.message,
+    };
+  }
+};
+
+
+  // Revisar un formulario existente
+  export const reviewForm = async (formId, data) => {
     try {
-      await apiClient.get("/auth/logout");
-      localStorage.removeItem("token");  // Elimina el token del almacenamiento local
-      window.location.href = "/";  // Redirige al inicio o a la página de login
+      const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+      const token = userDetails?.token;
+
+      const res = await apiClient.patch(`/form/${formId}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return {
+        data: res.data,
+        error: false,
+      };
     } catch (e) {
       return {
         error: true,
@@ -166,17 +216,138 @@
     }
   };
 
-  export default {
-    register,
-    login,
-    forgottenPassword,
-    updatePassword,
-    getAllPets,
-    getFilteredPets,
-    addPet,
-    createForm,
-    reviewForm,
-    googleLogin,
-    getAuthenticatedUser,
-    logout,
-  };
+export const getOngoingAdoptions = async () => {
+  try {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    const token = userDetails?.token;
+
+    const res = await apiClient.get('/report/ongoing', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return {
+      success: res.data.success,
+      ongoingAdoptions: res.data.ongoingAdoptions || [],
+    };
+  } catch (e) {
+    return {
+      success: false,
+      error: e,
+      ongoingAdoptions: [],
+    };
+  }
+};
+
+export const getCompletedAdoptions = async () => {
+  try {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    const token = userDetails?.token;
+
+    const res = await apiClient.get('/report/concluded', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return {
+      success: res.data.success,
+      completedAdoptions: res.data.completedAdoptions || [],
+    };
+  } catch (e) {
+    return {
+      success: false,
+      error: e,
+      completedAdoptions: [],
+    };
+  }
+};
+
+export const reviewFormById = async (formId) => {
+  try {
+    const res = await apiClient.get(`/form/${formId}`);
+    return res.data;
+  } catch (e) {
+    return {
+      error: true,
+      e,
+    };
+  }
+};
+
+
+export const googleLogin = async () => {
+  window.location.href = "http://127.0.0.1:3000/AdopcionDeAnimales/v1/auth/google";
+};
+
+// Solicitar el perfil del usuario autenticado
+export const getAuthenticatedUser = async () => {
+  try {
+    const res = await apiClient.get("/auth/success");
+    return res.data;
+  } catch (e) {
+    return {
+      error: true,
+      e,
+    };
+  }
+};
+
+// Cerrar sesión
+export const logout = async () => {
+  try {
+    await apiClient.get("/auth/logout");
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  } catch (e) {
+    return {
+      error: true,
+      e,
+    };
+  }
+};
+export const generateFormPDF = async (formId) => {
+  try {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    const token = userDetails?.token;
+
+    const res = await apiClient.get(`/form/pdf/${formId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: "blob", 
+    });
+
+    const url = window.URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `Formulario_${formId}.pdf`);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    return { success: true };
+  } catch (e) {
+    return {
+      success: false,
+      error: e,
+    };
+  }
+};
+
+
+export default {
+  register,
+  login,
+  forgottenPassword,
+  updatePassword,
+  getAllPets,
+  getFilteredPets,
+  addPet,
+  adoptPetById,
+  reviewForm,
+  getOngoingAdoptions,
+  googleLogin,
+  getAuthenticatedUser,
+  logout,
+};

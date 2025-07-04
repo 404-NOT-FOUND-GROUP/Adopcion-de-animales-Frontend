@@ -3,6 +3,7 @@ import React from "react";
 import { useRoutes } from "react-router-dom";
 import { routes } from "./routes.jsx";
 import { Toaster } from "react-hot-toast";
+import "mdb-react-ui-kit/dist/css/mdb.min.css";
 
 export const App = () => {
   const element = useRoutes(routes);

@@ -1,185 +1,85 @@
-// src/components/nav/Sidebar.jsx
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { NavLink, useLocation } from 'react-router-dom';
-import { ListGroup, Collapse } from 'react-bootstrap';
-import { useUserDetails } from '../../shared/hooks/useUserDetails';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../shared/hooks/useAuth";
 
-const MENU = [
-  { path: '/dashboard', label: 'Inicio', roles: ['ALL'] },
-];
+export const Sidebar = () => {
+  const [collapsed, setCollapsed] = useState(false);
+  const [openSection, setOpenSection] = useState(null);
+  const navigate = useNavigate();
+  const { isAdmin } = useAuth();
 
-const USERS_MENU = [
-  { path: '/dashboard/users',       label: 'Listado',   key: 'list'   },
-  { path: '/dashboard/users/create', label: 'Crear',     key: 'create' },
-];
+  if (!isAdmin) return null;
 
-const ACCOUNTS_MENU = [
-  { path: '/dashboard/accounts',        label: 'Listado', key: 'list'   },
-  { path: '/dashboard/accounts/create', label: 'Crear',   key: 'create' },
-];
+  const toggleSection = (section) => {
+    setOpenSection(openSection === section ? null : section);
+  };
 
-const TRANSACTIONS_MENU = [
-  { path: '/dashboard/transactions',            label: 'Listado',      key: 'list'     },
-  { path: '/dashboard/transactions/deposit',    label: 'Depósito',     key: 'deposit'  },
-  { path: '/dashboard/transactions/transfer',   label: 'Transferencia',key: 'transfer' },
-  { path: '/dashboard/transactions/purchase',   label: 'Compra',       key: 'purchase' },
-  { path: '/dashboard/transactions/credit',     label: 'Crédito',      key: 'credit'   },
-];
-
-export const Sidebar = ({ onLinkClick }) => {
-  const { role } = useUserDetails();
-  const location = useLocation();
-
-  const [openUsers, setOpenUsers] = useState(location.pathname.startsWith('/dashboard/users'));
-  const [openAccounts, setOpenAccounts] = useState(location.pathname.startsWith('/dashboard/accounts'));
-  const [openTx, setOpenTx] = useState(location.pathname.startsWith('/dashboard/transactions'));
-
-  // filter helpers
-  const showUsers    = ['ADMIN_GLOBAL','GERENTE_SUCURSAL'].includes(role);
-  const showAccounts = ['ADMIN_GLOBAL','GERENTE_SUCURSAL'].includes(role);
-  const showTxList   = ['ADMIN_GLOBAL','GERENTE_SUCURSAL','CAJERO'].includes(role);
-
-  const userOps = USERS_MENU.filter(op => {
-    if (op.key === 'list')   return showUsers;
-    return false;
-  });
-
-  const acctOps = ACCOUNTS_MENU.filter(op => {
-    if (op.key === 'list')   return showAccounts;
-    if (op.key === 'create') return ['ADMIN_GLOBAL','GERENTE_SUCURSAL'].includes(role);
-    return false;
-  });
-
-  const txOps = TRANSACTIONS_MENU.filter(op => {
-    if (op.key === 'list')     return showTxList;
-    if (op.key === 'deposit')  return ['ADMIN_GLOBAL','CAJERO','CLIENTE'].includes(role);
-    if (op.key === 'transfer'|| op.key === 'purchase') return role === 'ADMIN_GLOBAL','CLIENTE';
-    if (op.key === 'credit')   return role === 'ADMIN_GLOBAL','CAJERO';
-    return false;
-  });
+  const goTo = (path) => {
+    navigate(path);
+  };
 
   return (
-    <div className="bg-white border-end vh-100" style={{ width: 220 }}>
-      <ListGroup variant="flush">
+    <>
+      <button
+        className="sidebar-toggle-btn"
+        onClick={() => setCollapsed(!collapsed)}
+      >
+        ☰
+      </button>
 
-        {MENU.map(item => (
-          <ListGroup.Item key={item.path} className="p-0 border-0">
-            <NavLink
-              to={item.path}
-              onClick={onLinkClick}
-              className={({ isActive }) =>
-                `d-block py-2 px-3 text-decoration-none ${
-                  isActive ? 'bg-primary text-white' : 'text-dark'
-                }`
-              }
-            >
-              {item.label}
-            </NavLink>
-          </ListGroup.Item>
-        ))}
+      <div className={`sidebar-container ${collapsed ? "collapsed" : ""}`}>
+        <div className="sidebar-header">
+          🐾 <span>Sistema de Adopción</span>
+        </div>
 
-        {/* Usuarios */}
-        {showUsers && (
-          <ListGroup.Item className="p-0 border-0">
+        <div className="sidebar-menu">
+          <div className="sidebar-section">
             <button
-              className="btn btn-toggle align-items-center rounded w-100 text-start px-3"
-              onClick={() => setOpenUsers(!openUsers)}
-              aria-expanded={openUsers}
+              className="sidebar-title clickable"
+              onClick={() => toggleSection("mascotas")}
             >
-              Usuarios
+              <span>🐶 Mascotas</span>
+              <span>{openSection === "mascotas" ? "▲" : "▼"}</span>
             </button>
-            <Collapse in={openUsers}>
-              <ListGroup variant="flush" className="ms-3">
-                {userOps.map(op => (
-                  <ListGroup.Item key={op.path} className="p-0 border-0">
-                    <NavLink
-                      to={op.path}
-                      onClick={onLinkClick}
-                      className={({ isActive }) =>
-                        `d-block py-2 px-3 text-decoration-none ${
-                          isActive ? 'bg-primary text-white' : 'text-dark'
-                        }`
-                      }
-                    >
-                      {op.label}
-                    </NavLink>
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-            </Collapse>
-          </ListGroup.Item>
-        )}
+            {openSection === "mascotas" && (
+              <div className="sidebar-submenu">
+                <div
+                  className="sidebar-subitem"
+                  onClick={() => goTo("/mascotas/nueva")}
+                >
+                  Agregar
+                </div>
+              </div>
+            )}
+          </div>
 
-        {/* Cuentas */}
-        {showAccounts && (
-          <ListGroup.Item className="p-0 border-0">
+          <div className="sidebar-section">
             <button
-              className="btn btn-toggle align-items-center rounded w-100 text-start px-3"
-              onClick={() => setOpenAccounts(!openAccounts)}
-              aria-expanded={openAccounts}
+              className="sidebar-title clickable"
+              onClick={() => toggleSection("solicitudes")}
             >
-              Cuentas
+              <span>📄 Solicitudes de Adopción</span>
+              <span>{openSection === "solicitudes" ? "▲" : "▼"}</span>
             </button>
-            <Collapse in={openAccounts}>
-              <ListGroup variant="flush" className="ms-3">
-                {acctOps.map(op => (
-                  <ListGroup.Item key={op.path} className="p-0 border-0">
-                    <NavLink
-                      to={op.path}
-                      onClick={onLinkClick}
-                      className={({ isActive }) =>
-                        `d-block py-2 px-3 text-decoration-none ${
-                          isActive ? 'bg-primary text-white' : 'text-dark'
-                        }`
-                      }
-                    >
-                      {op.label}
-                    </NavLink>
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-            </Collapse>
-          </ListGroup.Item>
-        )}
-
-        {/* Transacciones */}
-        {showTxList && (
-          <ListGroup.Item className="p-0 border-0">
-            <button
-              className="btn btn-toggle align-items-center rounded w-100 text-start px-3"
-              onClick={() => setOpenTx(!openTx)}
-              aria-expanded={openTx}
-            >
-              Transacciones
-            </button>
-            <Collapse in={openTx}>
-              <ListGroup variant="flush" className="ms-3">
-                {txOps.map(op => (
-                  <ListGroup.Item key={op.path} className="p-0 border-0">
-                    <NavLink
-                      to={op.path}
-                      onClick={onLinkClick}
-                      className={({ isActive }) =>
-                        `d-block py-2 px-3 text-decoration-none ${
-                          isActive ? 'bg-primary text-white' : 'text-dark'
-                        }`
-                      }
-                    >
-                      {op.label}
-                    </NavLink>
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-            </Collapse>
-          </ListGroup.Item>
-        )}
-
-      </ListGroup>
-    </div>
+            {openSection === "solicitudes" && (
+              <div className="sidebar-submenu">
+                <div
+                  className="sidebar-subitem"
+                  onClick={() => goTo("/report/ongoing")}
+                >
+                  Solicitudes Recientes
+                </div>
+                <div
+                  className="sidebar-subitem"
+                  onClick={() => goTo("/report/completed")}
+                >
+                  Solicitudes Finalizadas
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </>
   );
-};
-
-Sidebar.propTypes = {
-  onLinkClick: PropTypes.func,
 };

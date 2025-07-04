@@ -1,26 +1,31 @@
-// src/shared/hooks/useUserDetails.js
 import { useState, useEffect } from "react";
 
 export const useUserDetails = () => {
   const [userDetails, setUserDetails] = useState(null);
 
   useEffect(() => {
-    // Recuperar el token de la URL cuando el usuario se redirige después de iniciar sesión
+    const storedUserDetails = localStorage.getItem("userDetails");
+    if (storedUserDetails && storedUserDetails !== "undefined") {
+      try {
+        const parsed = JSON.parse(storedUserDetails);
+        setUserDetails(parsed);
+        return;
+      } catch (e) {
+        setUserDetails(null, e);
+      }
+    }
     const token = new URLSearchParams(window.location.search).get("token");
     if (token) {
-      sessionStorage.setItem("token", token); // Guardamos el token en sessionStorage
+      localStorage.setItem("token", token);
       setUserDetails({ token });
     } else {
-      const storedUserDetails = sessionStorage.getItem("userDetails");
-      if (storedUserDetails) {
-        setUserDetails(JSON.parse(storedUserDetails));
-      }
+      setUserDetails(null);
     }
   }, []);
 
   const logout = () => {
-    sessionStorage.removeItem("userDetails");
-    sessionStorage.removeItem("token");
+    localStorage.removeItem("userDetails");
+    localStorage.removeItem("token");
     setUserDetails(null);
   };
 

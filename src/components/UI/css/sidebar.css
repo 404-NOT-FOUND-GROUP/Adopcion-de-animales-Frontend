@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
+
+.sidebar-container {
+  position: fixed;
+  top: 110px; /* Subido para que quede justo debajo del navbar */
+  left: 0;
+  width: 260px;
+  height: calc(100vh - 70px);
+  background: linear-gradient(180deg, #00c9ff 0%, #92fe9d 100%);
+  padding: 1rem;
+  font-family: 'Quicksand', sans-serif;
+  transition: transform 0.3s ease-in-out;
+  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  overflow-y: auto;
+  border-top-right-radius: 10px;
+}
+
+.sidebar-container.collapsed {
+  transform: translateX(-100%);
+}
+
+.sidebar-toggle-btn {
+  position: fixed;
+  top: 120px; 
+  left: 10px;
+  z-index: 1000;
+  background-color: #ffffff;
+  color: #333;
+  border: 2px solid #333;
+  padding: 8px 14px;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.sidebar-toggle-btn:hover {
+  background-color: #f0a500;
+  color: white;
+  transform: scale(1.05);
+}
+
+.sidebar-header {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar-section {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.sidebar-title.clickable {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  padding: 5px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: left;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar-title.clickable:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-submenu {
+  animation: fadeIn 0.3s ease-in-out;
+  margin-top: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+.sidebar-subitem {
+  font-size: 0.95rem;
+  color: #fdfdfd;
+  padding: 6px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar-subitem:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scaleY(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar-container {
+    width: 200px;
+    padding: 0.8rem;
+  }
+
+  .sidebar-toggle-btn {
+    font-size: 1rem;
+    padding: 6px 10px;
+  }
+
+  .sidebar-header {
+    font-size: 1.1rem;
+  }
+
+  .sidebar-item, .sidebar-subitem {
+    font-size: 0.9rem;
+  }
+}

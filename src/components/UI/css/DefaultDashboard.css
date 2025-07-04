@@ -1,0 +1,358 @@
+/* Estructura principal */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url("../../../assets/background.png");
+  background-size: 300px; /* 🔹 más pequeño */
+  background-repeat: repeat; /* 🔁 para que se repita */
+  background-position: center;
+}
+
+.dashboard-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9fafb;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.dashboard-main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 200px 2rem 2rem;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.85); /* blanco con 85% de opacidad */
+  backdrop-filter: blur(4px); /* efecto vidrio borroso (opcional pero bonito) */
+  border-radius: 16px; /* opcional para suavizar bordes */
+}
+
+
+.dashboard-center-box {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Carrusel */
+.dashboard-carousel-container {
+  margin-bottom: 3rem;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Bienvenida */
+.welcome-section {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.welcome-title {
+  font-size: 2.5rem;
+  color: #f72c88;
+  font-weight: 800;
+}
+
+.welcome-text {
+  font-size: 1.3rem;
+  color: #444;
+  margin-top: 0.5rem;
+}
+
+/* Adopción */
+.adopt-section {
+  margin-top: 4rem;
+}
+
+.adopt-flex {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.adopt-text {
+  flex: 1;
+}
+
+.adopt-text h2 {
+  font-size: 2rem;
+  color: #90d000;
+  margin-bottom: 1rem;
+}
+
+.adopt-text p {
+  font-size: 1.1rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+.adopt-image-container {
+  flex: 1;
+  max-width: 500px;
+}
+
+.adopt-image-container img {
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.adopt-image-container img:hover {
+  transform: scale(1.03);
+}
+
+/* Animaciones */
+.fade-in {
+  animation: fadeUp 1s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Layout de las tarjetas */
+.recommendation-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Tarjetas normales */
+.recommendation-item {
+  flex: 1 1 250px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 6px rgb(0 0 0 / 0.1);
+  max-width: 280px;
+}
+
+.recommendation-item img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.recommendation-text {
+  padding: 15px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Diseño especial para la primera tarjeta */
+.special-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  background: #fff0f6;
+  border-radius: 15px;
+  padding: 30px;
+  gap: 30px;
+  box-shadow: 0 6px 16px rgba(233, 30, 99, 0.2);
+  max-width: 100%;
+  margin: 0 auto 3rem auto;
+}
+
+.image-container {
+  background-color: #e91e63;
+  padding: 25px;
+  border-radius: 20px;
+  flex-shrink: 0;
+  max-width: 670px;
+  width: 100%;
+  box-shadow: 0 10px 20px rgba(233, 30, 99, 0.5);
+  animation: pulseFuchsia 3s ease-in-out infinite alternate;
+}
+
+.image-container img {
+  width: 100%;
+  border-radius: 12px;
+  display: block;
+  object-fit: cover;
+}
+
+/* Caja de texto especial */
+.special-text {
+  flex: 1;
+  font-family: 'Poppins', sans-serif;
+  color: #4a4a4a;
+  animation: slideFadeIn 1s ease forwards;
+  opacity: 0;
+  transform: translateX(40px);
+  min-width: 280px;
+  text-align: center;
+}
+
+.special-text h3 {
+  font-size: 4rem;
+  margin-bottom: 12px;
+  color: #e91e63;
+}
+
+.special-text p {
+  font-size: 1.4rem;
+  line-height: 1.6;
+}
+
+/* Animación pulso para fondo fucsia */
+@keyframes pulseFuchsia {
+  0% {
+    box-shadow: 0 6px 12px rgba(233, 30, 99, 0.5);
+  }
+  100% {
+    box-shadow: 0 12px 24px rgba(233, 30, 99, 0.8);
+  }
+}
+
+/* Animación texto que aparece desde la derecha */
+@keyframes slideFadeIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.adoption-message-box {
+  background: #eafde9;
+  border-left: 8px solid #6fcf97;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  margin-top: 4rem;
+  margin-bottom: 3rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  transition: transform 0.3s ease;
+}
+
+.adoption-message-box:hover {
+  transform: translateY(-3px);
+}
+
+.adoption-message-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.adoption-message-text h2 {
+  font-size: 2.2rem;
+  color: #388e3c;
+  margin-bottom: 1.2rem;
+  font-weight: 800;
+}
+
+.adoption-message-text p {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+.adoption-benefits {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 1rem;
+}
+
+.adoption-benefits li {
+  margin-bottom: 0.7rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 1.1rem;
+  color: #2e7d32;
+  line-height: 1.5;
+}
+
+.adoption-benefits li::before {
+  content: "✔️";
+  position: absolute;
+  left: 0;
+  top: 0.05rem;
+  font-size: 1.1rem;
+}
+
+.turquoise-message-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  background: #e0fdfd; /* fondo turquesa claro */
+  border-radius: 15px;
+  padding: 30px;
+  gap: 30px;
+  box-shadow: 0 6px 16px rgba(0, 188, 212, 0.2);
+  max-width: 100%;
+  margin: 0 auto 3rem auto;
+  animation: fadeUp 1s ease forwards;
+  opacity: 0;
+}
+
+.turquoise-message-image {
+  background-color: #00bcd4; /* turquesa oscuro */
+  padding: 25px;
+  border-radius: 20px;
+  flex-shrink: 0;
+  max-width: 670px;
+  width: 100%;
+  box-shadow: 0 10px 20px rgba(0, 188, 212, 0.5);
+  animation: pulseTurquoise 3s ease-in-out infinite alternate;
+  order: 2; /* Imagen al lado derecho */
+}
+
+.turquoise-message-image img {
+  width: 100%;
+  border-radius: 12px;
+  display: block;
+  object-fit: cover;
+}
+
+.turquoise-message-text {
+  flex: 1;
+  font-family: 'Poppins', sans-serif;
+  color: #4a4a4a;
+  animation: slideFadeIn 1s ease forwards;
+  opacity: 0;
+  transform: translateX(-40px);
+  min-width: 280px;
+  text-align: center;
+  order: 1; /* Texto al lado izquierdo */
+}
+
+
+.turquoise-message-text h3 {
+  font-size: 4rem;
+  margin-bottom: 12px;
+  color: #00acc1; /* azul turquesa */
+}
+
+.turquoise-message-text p {
+  font-size: 1.4rem;
+  line-height: 1.6;
+}
+
+@keyframes pulseTurquoise {
+  0% {
+    box-shadow: 0 6px 12px rgba(0, 188, 212, 0.5);
+  }
+  100% {
+    box-shadow: 0 12px 24px rgba(0, 188, 212, 0.8);
+  }
+}

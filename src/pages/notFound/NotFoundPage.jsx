@@ -7,7 +7,7 @@ export const NotFoundPage = () => {
         <h1 className="text-6xl font-bold mb-4">404</h1>
         <p className="text-2xl mb-6">Oops! La página que buscas no se encuentra.</p>
         <a
-          href="/"
+          href="/dashboard"
           className="text-lg font-medium bg-white text-gray-800 px-6 py-2 rounded-md shadow-lg hover:bg-gray-100 transition-all"
         >
           Volver al inicio

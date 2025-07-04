@@ -1,189 +1,236 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Input } from '../UI/Input'; // Asegúrate de tener este componente Input en tu proyecto.
-import { validateEmail, validatePassword, validateUsername, validatePhone, validatePasswordConfirm } from '../../shared/validators';
-import { useRegister } from '../../shared/hooks/useRegister';
-import toast from 'react-hot-toast';
+import React, { useState, useEffect } from "react";
+import { useRegister } from "../../shared/hooks/useRegister";
+import { validateEmail, valideEmailMessage } from "../../shared/validators/valideEmail";
+import { validatePassword, validatePasswordMessage } from "../../shared/validators/validatePassword";
+import { useNavigate } from "react-router-dom";
 
-export const Register = ({ switchAuthHandler }) => {
-  const { register, isLoading } = useRegister();
-  
+export const Register = () => {
+  const navigate = useNavigate();
+  const { register, isLoading, error, success } = useRegister();
+
   const [form, setForm] = useState({
     nombre: { value: '', isValid: false, showError: false },
-    apellido: { value: '', isValid: false, showError: false },
-    username: { value: '', isValid: false, showError: false },
     email: { value: '', isValid: false, showError: false },
-    phone: { value: '', isValid: false, showError: false },
     password: { value: '', isValid: false, showError: false },
     passwordConf: { value: '', isValid: false, showError: false },
+    foto: { value: null, isValid: true, showError: false },
     role: { value: 'USER_ROLE', isValid: true, showError: false }
   });
 
-  const handleChange = (val, field) => {
-    setForm(prev => ({ ...prev, [field]: { ...prev[field], value: val } }));
+  const validators = {
+    nombre: (val) => val.trim().length >= 2,
+    email: validateEmail,
+    password: validatePassword,
+    passwordConf: (val) => form.password.value === val && validatePassword(val)
   };
 
-  const handleBlur = (val, field) => {
-    let valid = false;
-    switch (field) {
-      case 'nombre':
-      case 'apellido':
-        valid = val.trim().length > 0;
-        break;
-      case 'username':
-        valid = validateUsername(val);
-        break;
-      case 'email':
-        valid = validateEmail(val);
-        break;
-      case 'phone':
-        valid = validatePhone(val);
-        break;
-      case 'password':
-        valid = validatePassword(val);
-        break;
-      case 'passwordConf':
-        valid = validatePasswordConfirm(form.password.value, val);
-        break;
-      default:
-        valid = true;
-    }
-    setForm(prev => ({
+  const messages = {
+    nombre: "El nombre debe tener al menos 2 caracteres.",
+    email: valideEmailMessage,
+    password: validatePasswordMessage,
+    passwordConf: "Las contraseñas no coinciden o no cumplen los requisitos."
+  };
+
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    const val = files ? files[0] : value;
+    const isValid = validators[name] ? validators[name](val) : true;
+    setForm((prev) => ({
       ...prev,
-      [field]: { ...prev[field], isValid: valid, showError: !valid },
+      [name]: {
+        value: val,
+        isValid,
+        showError: prev[name].showError
+      }
+    }));
+
+    if (name === "password" || name === "passwordConf") {
+      setForm((prev) => ({
+        ...prev,
+        password: {
+          ...prev.password,
+          isValid: validators.password(prev.password.value),
+        },
+        passwordConf: {
+          ...prev.passwordConf,
+          isValid: validators.passwordConf(prev.passwordConf.value),
+        }
+      }));
+    }
+  };
+
+  const handleBlur = (e) => {
+    const { name } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: {
+        ...prev[name],
+        showError: !prev[name].isValid
+      }
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const userData = {
-      nombre: form.nombre.value.trim(),
-      apellido: form.apellido.value.trim(),
-      username: form.username.value.trim(),
-      email: form.email.value.trim().toLowerCase(),
-      phone: form.phone.value.trim(),
-      password: form.password.value,
-      role: form.role.value
-    };
+    const updatedForm = {};
+    let allValid = true;
 
-    register(userData);  // Llamar al hook para realizar el registro
+    Object.keys(form).forEach((field) => {
+      const isValid = validators[field] ? validators[field](form[field].value) : true;
+      updatedForm[field] = {
+        ...form[field],
+        isValid,
+        showError: !isValid
+      };
+      if (!isValid) allValid = false;
+    });
+
+    setForm(updatedForm);
+    if (!allValid) return;
+
+    const data = new FormData();
+    data.append("nombre", form.nombre.value);
+    data.append("email", form.email.value);
+    data.append("password", form.password.value);
+    if (form.foto.value) data.append("foto", form.foto.value);
+    data.append("role", form.role.value);
+
+    register(data);
   };
 
-  const allValid = form.nombre.isValid && form.apellido.isValid && form.username.isValid && form.email.isValid && form.phone.isValid && form.password.isValid && form.passwordConf.isValid;
+  useEffect(() => {
+    if (success) {
+      setShowSuccess(true);
+      const timer = setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [success, navigate]);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="row g-3">
-        <div className="col-12 col-md-6">
-          <Input
-            field="nombre"
-            label="Nombre"
-            type="text"
-            value={form.nombre.value}
-            onChangeHandler={handleChange}
-            onBlurHandler={handleBlur}
-            showErrorMessage={form.nombre.showError}
-            validationMessage="El nombre es obligatorio."
-            inputClass="form-control"
-          />
+    <div
+      className="table-responsive"
+      style={{
+        marginTop: "75px",
+        paddingBottom: "2rem",
+        minHeight: "calc(100vh - 100px)",
+        overflowY: "auto",
+      }}
+    >
+      <div className="container d-flex justify-content-center align-items-start" style={{ minHeight: "100vh", paddingTop: "10px" }}>
+        <div className="row justify-content-center w-100">
+          <div className="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5" style={{ minWidth: "340px", maxWidth: "400px", margin: "0 auto" }}>
+            <div className="card shadow border-0">
+              <div className="card-header text-white text-center" style={{ background: "#17486b", fontSize: "1.5rem", fontWeight: "bold" }}>
+                Registro de Usuario
+              </div>
+              <div className="card-body">
+                {showSuccess ? (
+                  <div className="alert alert-success text-center" role="alert">
+                    ¡Registro exitoso! Redirigiendo al inicio de sesión...
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} noValidate encType="multipart/form-data">
+                    <div className="mb-3">
+                      <label className="form-label">Nombre</label>
+                      <input
+                        name="nombre"
+                        className={`form-control ${form.nombre.showError ? "is-invalid" : ""}`}
+                        value={form.nombre.value}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        required
+                        autoFocus
+                      />
+                      {form.nombre.showError && (
+                        <div className="invalid-feedback">{messages.nombre}</div>
+                      )}
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Correo electrónico</label>
+                      <input
+                        name="email"
+                        type="email"
+                        className={`form-control ${form.email.showError ? "is-invalid" : ""}`}
+                        value={form.email.value}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        required
+                      />
+                      {form.email.showError && (
+                        <div className="invalid-feedback">{messages.email}</div>
+                      )}
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Contraseña</label>
+                      <input
+                        name="password"
+                        type="password"
+                        className={`form-control ${form.password.showError ? "is-invalid" : ""}`}
+                        value={form.password.value}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        required
+                      />
+                      {form.password.showError && (
+                        <div className="invalid-feedback">{messages.password}</div>
+                      )}
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Confirmar contraseña</label>
+                      <input
+                        name="passwordConf"
+                        type="password"
+                        className={`form-control ${form.passwordConf.showError ? "is-invalid" : ""}`}
+                        value={form.passwordConf.value}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        required
+                      />
+                      {form.passwordConf.showError && (
+                        <div className="invalid-feedback">{messages.passwordConf}</div>
+                      )}
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Foto de perfil (opcional)</label>
+                      <input
+                        name="foto"
+                        type="file"
+                        className="form-control"
+                        accept="image/*"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
+                      {isLoading ? "Registrando..." : "Registrarse"}
+                    </button>
+                    {error && (
+                      <div className="alert alert-danger mt-3 text-center">
+                        {error}
+                      </div>
+                    )}
+                  </form>
+                )}
+                {!showSuccess && (
+                  <div className="text-center mt-3 small">
+                    ¿Ya tienes cuenta?{" "}
+                    <button
+                      type="button"
+                      className="btn btn-link p-0"
+                      onClick={() => navigate("/login")}
+                    >
+                      Iniciar sesión
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="col-12 col-md-6">
-          <Input
-            field="apellido"
-            label="Apellido"
-            type="text"
-            value={form.apellido.value}
-            onChangeHandler={handleChange}
-            onBlurHandler={handleBlur}
-            showErrorMessage={form.apellido.showError}
-            validationMessage="El apellido es obligatorio."
-            inputClass="form-control"
-          />
-        </div>
       </div>
-
-      <div className="mt-3">
-        <Input
-          field="username"
-          label="Usuario"
-          type="text"
-          value={form.username.value}
-          onChangeHandler={handleChange}
-          onBlurHandler={handleBlur}
-          showErrorMessage={form.username.showError}
-          validationMessage="El usuario es obligatorio."
-          inputClass="form-control"
-        />
-      </div>
-
-      <div className="mt-3">
-        <Input
-          field="email"
-          label="Correo Electrónico"
-          type="email"
-          value={form.email.value}
-          onChangeHandler={handleChange}
-          onBlurHandler={handleBlur}
-          showErrorMessage={form.email.showError}
-          validationMessage="El correo electrónico es obligatorio."
-          inputClass="form-control"
-        />
-      </div>
-
-      <div className="mt-3">
-        <Input
-          field="phone"
-          label="Teléfono"
-          type="tel"
-          value={form.phone.value}
-          onChangeHandler={handleChange}
-          onBlurHandler={handleBlur}
-          showErrorMessage={form.phone.showError}
-          validationMessage="El teléfono es obligatorio."
-          inputClass="form-control"
-        />
-      </div>
-
-      <div className="row g-3 mt-3">
-        <div className="col-12 col-md-6">
-          <Input
-            field="password"
-            label="Contraseña"
-            type="password"
-            value={form.password.value}
-            onChangeHandler={handleChange}
-            onBlurHandler={handleBlur}
-            showErrorMessage={form.password.showError}
-            validationMessage="La contraseña debe tener al menos 8 caracteres."
-            inputClass="form-control"
-          />
-        </div>
-        <div className="col-12 col-md-6">
-          <Input
-            field="passwordConf"
-            label="Confirmar Contraseña"
-            type="password"
-            value={form.passwordConf.value}
-            onChangeHandler={handleChange}
-            onBlurHandler={handleBlur}
-            showErrorMessage={form.passwordConf.showError}
-            validationMessage="Las contraseñas no coinciden."
-            inputClass="form-control"
-          />
-        </div>
-      </div>
-
-      <button
-        type="submit"
-        disabled={!allValid || isLoading}
-        className={`btn btn-primary w-100 mt-4${(!allValid || isLoading) ? ' disabled' : ''}`}
-      >
-        {isLoading ? 'Registrando...' : 'Crear Cuenta'}
-      </button>
-    </form>
+    </div>
   );
-};
-
-Register.propTypes = {
-  switchAuthHandler: PropTypes.func.isRequired,
 };

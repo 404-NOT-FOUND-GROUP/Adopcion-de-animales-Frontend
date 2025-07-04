@@ -1,45 +1,188 @@
-// src/components/nav/NavBar.jsx
-import React from 'react';
-import { Navbar, Container, Button, Nav } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { FaUserCircle } from 'react-icons/fa';
-import { useUserDetails } from '../../shared/hooks/useUserDetails';
-import logo from '../../assets/logo.png';
+import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../UI/css/navbar.css';
+import Logo from '../../assets/Logo.png';
 
-export const NavBar = ({ onToggleSidebar }) => {
-  const { isLogged, logout } = useUserDetails();
+const NavLogo = ({ onClick }) => (
+  <div className="d-flex align-items-center gap-2 cursor-pointer" onClick={onClick}>
+    <img className="nav-logo" src={Logo} alt="Logo De Mascotas" />
+    <h3 className="nav-title mb-0">Albergue Municipal</h3>
+  </div>
+);
+
+const EmojiAnimal = ({ emoji, label }) => (
+  <div className="emoji-animal" role="img" aria-label={label}>
+    {emoji}
+  </div>
+);
+
+const AnimalParade = () => (
+  <div className="emoji-parade-container">
+    <div className="emoji-parade">
+      <span className="emoji-paw">🐾</span>
+      <span className="emoji-paw">🐾</span>
+      <EmojiAnimal emoji="🐶" label="Perro" />
+      <span className="emoji-paw">🐾</span>
+      <EmojiAnimal emoji="🐱" label="Gato" />
+      <span className="emoji-paw">🐾</span>
+      <EmojiAnimal emoji="🐕" label="Perro 2" />
+      <span className="emoji-paw">🐾</span>
+      <EmojiAnimal emoji="🐈" label="Gato 2" />
+      <span className="emoji-paw">🐾</span>
+      <span className="emoji-paw">🐾</span>
+    </div>
+  </div>
+);
+
+export const NavBar = () => {
+  const navigate = useNavigate();
+  const menuRef = useRef(null);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('userDetails'));
+  const [showMenu, setShowMenu] = useState(false);
+
+  useEffect(() => {
+    setIsLoggedIn(!!localStorage.getItem('userDetails'));
+  }, []);
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIsLoggedIn(!!localStorage.getItem('userDetails'));
+    };
+
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowMenu(false);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('userDetails');
+    setIsLoggedIn(false);
+    setShowMenu(false);
+    navigate('/');
+  };
+
+  const handleNavigate = (path) => {
+    navigate(path);
+    setShowMenu(false);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const user = localStorage.getItem('userDetails');
+      setIsLoggedIn(!!user);
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <Navbar bg="white" expand={false} className="border-bottom shadow-sm">
-      <Container fluid>
-        <Button
-          variant="link"
-          className="d-md-none p-0 me-2"
-          onClick={onToggleSidebar}
+    <>
+      <nav className="custom-navbar container-fluid d-flex flex-column">
+        <div className="navbar-top d-flex align-items-center w-100">
+          <div className="navbar-section left">
+            <NavLogo onClick={() => navigate('/dashboard')} />
+          </div>
+
+          <div className="navbar-section center d-flex justify-content-start">
+            <AnimalParade />
+          </div>
+
+          <div className="navbar-section right d-flex align-items-center position-relative">
+            <div
+              className="user-icon-container"
+              onClick={() => setShowMenu(!showMenu)}
+              ref={menuRef}
+              role="button"
+              tabIndex={0}
+              aria-haspopup="true"
+              aria-expanded={showMenu}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  setShowMenu(!showMenu);
+                }
+              }}
+            >
+              <div className="user-icon-placeholder" title="Menú de usuario">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="#00c9ff"  /* celeste */
+                  width="29px"
+                  height="29px"
+                >
+                  <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
+                </svg>
+              </div>
+
+              {showMenu && (
+                <div className="user-menu" role="menu">
+                  {!isLoggedIn ? (
+                    <>
+                      <button onClick={() => handleNavigate('/login')} role="menuitem">
+                        🔐 Iniciar sesión
+                      </button>
+                      <button onClick={() => handleNavigate('/register')} role="menuitem">
+                        📝 Registrarse
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button onClick={() => handleNavigate('/perfil')} role="menuitem">
+                        👤 Perfil
+                      </button>
+                      <button onClick={handleLogout} role="menuitem">
+                        🚪 Cerrar sesión
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="navbar-divider-horizontal my-2"></div>
+      </nav>
+
+      <div className="navbar-buttons-bar">
+        <button
+          className="navbar-link-btn"
+          onClick={() => handleNavigate('/ayuda')}
+          aria-label="Ayuda"
+          type="button"
         >
-          <i className="bi bi-list fs-3 text-dark" />
-        </Button>
-        <Navbar.Brand as={Link} to="/dashboard" className="d-flex align-items-center">
-          <img src={logo} alt="Logo" width={32} height={32} className="me-2" />
-          <span className="fw-bold text-dark">Banca Kinal</span>
-        </Navbar.Brand>
-        <Nav className="ms-auto align-items-center">
-          {!isLogged ? (
-            <Nav.Link as={Link} to="/auth" className="text-dark">
-              Iniciar sesión
-            </Nav.Link>
-          ) : (
-            <>
-              <Nav.Link as={Link} to="/dashboard/users/me" className="text-dark">
-                <FaUserCircle size={24} />
-              </Nav.Link>
-              <Button variant="outline-danger" className="ms-3" onClick={logout}>
-                Cerrar sesión
-              </Button>
-            </>
-          )}
-        </Nav>
-      </Container>
-    </Navbar>
+          ❓ Ayuda
+        </button>
+
+        <button
+          className="navbar-link-btn"
+          onClick={() => handleNavigate('/quienes-somos')}
+          aria-label="Quiénes somos"
+          type="button"
+        >
+          🏠 Quiénes somos
+        </button>
+
+        <button
+          className="navbar-link-btn"
+          onClick={() => handleNavigate('/mascotas')}
+          aria-label="Listar mascotas"
+          type="button"
+        >
+          🐾 Mascotas
+        </button>
+      </div>
+    </>
   );
 };

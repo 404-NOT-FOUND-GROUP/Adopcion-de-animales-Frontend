@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getFilteredPets as getFilteredPetsRequest } from "../../services/api";
 import toast from "react-hot-toast";
 
@@ -13,17 +13,24 @@ export const useGetFilteredPets = () => {
 
       if (result.error) {
         toast.error("Error al obtener las mascotas filtradas");
+        setPets([]);
         return;
       }
 
-      setPets(result.data);
+      // Siempre aseguramos que pets sea un array
+      setPets(result.pets || []);
     } catch (err) {
       console.error("Get Filtered Pets error:", err);
       toast.error("Error de red");
+      setPets([]);
     } finally {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    getFilteredPets({});
+  }, []);
 
   return {
     pets,
