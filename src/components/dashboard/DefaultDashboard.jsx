@@ -7,14 +7,7 @@ import { PetCarousel } from "../pets/PetsCarrusel.jsx";
 
 import bgImage from "../../assets/background.png";
 import img1 from "../../assets/ImagenAlbergue1.png";
-import img2 from "../../assets/ImagenAlbergue2.png";
-import img3 from "../../assets/ImagenAlbergue3.png";
-import img4 from "../../assets/ImagenAlbergue4.png";
-import img5 from "../../assets/ImagenAlbergue5.png";
-import img6 from "../../assets/ImagenAlbergue6.png";
-import img7 from "../../assets/ImagenAlbergue7.png";
 import img8 from "../../assets/ImagenAlbergue8.png";
-import img9 from "../../assets/ImagenAlbergue9.png";
 
 const images = [
   {

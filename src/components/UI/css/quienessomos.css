@@ -50,7 +50,7 @@ body {
 .contenido-central {
   max-width: 900px;
   margin: 0 auto;
-  padding: 80px 20px 40px;
+  padding: 60px 20px 40px;
   position: relative;
   z-index: 1;
 }
@@ -126,4 +126,76 @@ body {
 
 .btn-regresar:hover {
   background-color: #d02170;
+}
+
+@media (max-width: 900px) {
+  .contenido-central {
+    max-width: 98vw;
+    padding: 80px 8px 30px;
+  }
+  .titulo-principal {
+    font-size: 28px;
+  }
+  .subtitulo {
+    font-size: 20px;
+    margin-bottom: 18px;
+  }
+  .descripcion {
+    font-size: 16px;
+    margin-bottom: 25px;
+  }
+  .grid-objetivos {
+    gap: 14px;
+  }
+  .card-objetivo {
+    padding: 14px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 600px) {
+  .contenido-central {
+    max-width: 100vw;
+    padding: 0px 4px 20px 4px;
+  }
+  .titulo-principal {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  .subtitulo {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  .descripcion {
+    font-size: 14px;
+    margin-bottom: 18px;
+    padding: 0 2px;
+  }
+  .grid-objetivos {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .card-objetivo {
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+  .card-objetivo h3 {
+    font-size: 15px;
+  }
+  .card-objetivo p {
+    font-size: 13px;
+  }
+  .btn-regresar {
+    padding: 8px 18px;
+    font-size: 14px;
+    border-radius: 20px;
+  }
+  .iconos-flotantes {
+    top: 60px;
+    gap: 10px;
+  }
+  .emoji-float {
+    font-size: 18px;
+  }
 }

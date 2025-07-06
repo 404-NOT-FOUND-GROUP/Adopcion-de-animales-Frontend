@@ -6,6 +6,7 @@ import { NavBar } from "../../components/nav/NavBar.jsx";
 import { Sidebar } from "../../components/nav/Sidebar.jsx";
 import { useAuth } from "../../shared/hooks/useAuth";
 import { DeletePetButton } from "./DeletePetButtom.jsx";
+import "../../components/UI/css/PetDetail.css";
 
 const cloudName = "dkmmydkxt";
 const getImageUrl = (path) =>
@@ -42,6 +43,7 @@ export const PetDetail = () => {
   const navigate = useNavigate();
   const { pet, isLoading } = useGetPetById(petId);
 
+  // Responsive: para mostrar loading centrado en móvil/escritorio
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 700);
   React.useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 700);
@@ -49,119 +51,15 @@ export const PetDetail = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const containerStyle = {
-    display: "flex",
-    minHeight: "100vh",
-    background: "linear-gradient(135deg, #f7f7f7 60%, #ffe0b2 100%)",
-  };
-
-  const contentWrapperStyle = {
-    flex: 1,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    paddingTop: isMobile ? 100 : 200,
-    paddingBottom: 40,
-  };
-
-  const cardStyle = {
-    width: "100%",
-    maxWidth: 950,
-    background: "#fff",
-    borderRadius: 32,
-    boxShadow: "0 8px 32px rgba(0,0,0,0.13)",
-    display: "flex",
-    flexDirection: isMobile ? "column" : "row",
-    gap: isMobile ? 24 : 56,
-    padding: isMobile ? "2rem 1rem" : "3rem 3.5rem",
-    margin: "0 1rem",
-    position: "relative",
-    border: "1.5px solid #f5c16c",
-  };
-
-  const imageStyle = {
-    borderRadius: 28,
-    width: isMobile ? 180 : 320,
-    height: isMobile ? 180 : 320,
-    objectFit: "cover",
-    boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
-    background: "#eee",
-    flexShrink: 0,
-    border: "4px solid #ffe0b2",
-    margin: isMobile ? "0 auto" : 0,
-    display: "block",
-  };
-
-  const detailsStyle = {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    gap: 0,
-    marginTop: isMobile ? 24 : 0,
-  };
-
-  const nameStyle = {
-    fontSize: isMobile ? 28 : 38,
-    fontWeight: 800,
-    marginBottom: 18,
-    color: "#ff9800",
-    letterSpacing: 1,
-    textShadow: "0 2px 8px #ffe0b2",
-    lineHeight: 1.1,
-  };
-
-  const infoGroupStyle = {
-    display: "grid",
-    gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-    gap: isMobile ? 10 : 18,
-    marginBottom: 18,
-  };
-
-  const infoStyle = {
-    fontSize: 18,
-    color: "#444",
-    background: "#fff8e1",
-    borderRadius: 12,
-    padding: "8px 16px",
-    marginBottom: 0,
-    boxShadow: "0 1px 4px rgba(255,193,108,0.07)",
-    border: "1px solid #ffe0b2",
-    fontWeight: 500,
-  };
-
-  const statusStyle = {
-    fontWeight: 700,
-    marginTop: 18,
-    color: pet?.status === "AVAILABLE" ? "#43a047" : "#ff9800",
-    fontSize: 20,
-    letterSpacing: 1,
-    background: "#fffde7",
-    borderRadius: 10,
-    padding: "8px 18px",
-    display: "inline-block",
-    border: "1.5px solid #ffe0b2",
-    boxShadow: "0 1px 4px rgba(255,193,108,0.07)",
-  };
-
-  const buttonContainerStyle = {
-    marginTop: 36,
-    display: "flex",
-    justifyContent: isMobile ? "center" : "flex-end",
-    gap: 10,
-  };
-
   if (isLoading) {
     return (
       <>
         <NavBar />
-        <div style={containerStyle}>
+        <div className="pet-detail-bg">
           <Sidebar />
-          <div style={{ ...contentWrapperStyle, justifyContent: "center" }}>
-            <div style={{ fontSize: 20, color: "#ff9800" }}>
-              Cargando información de la mascota...
-            </div>
-          </div>
+          <main className="pet-detail-main">
+            <div className="loading">Cargando información de la mascota...</div>
+          </main>
         </div>
       </>
     );
@@ -171,18 +69,17 @@ export const PetDetail = () => {
     return (
       <>
         <NavBar />
-        <div style={containerStyle}>
+        <div className="pet-detail-bg">
           <Sidebar />
-          <div style={{ ...contentWrapperStyle, justifyContent: "center" }}>
-            <div style={{ fontSize: 20, color: "#ff9800" }}>
-              No se encontró la mascota.
-            </div>
-          </div>
+          <main className="pet-detail-main">
+            <div className="loading">No se encontró la mascota.</div>
+          </main>
         </div>
       </>
     );
   }
 
+  // Imagen: usa url directa, cloudinary o placeholder
   const imageUrl = pet.image
     ? isUrl(pet.image)
       ? pet.image
@@ -192,65 +89,71 @@ export const PetDetail = () => {
   return (
     <>
       <NavBar />
-      <div style={containerStyle}>
+      <div className="pet-detail-bg">
         <Sidebar />
-        <div style={contentWrapperStyle}>
-          <div style={cardStyle}>
-            <div>
-              <img src={imageUrl} alt={pet.name} style={imageStyle} />
+        <main className="pet-detail-main">
+          <section className="pet-detail-card">
+            <div className="pet-detail-imgbox">
+              <img src={imageUrl} alt={pet.name} />
             </div>
-            <div style={detailsStyle}>
-              <div style={nameStyle}>{pet.name}</div>
-              <div style={infoGroupStyle}>
-                <div style={infoStyle}>
-                  <strong>Tipo:</strong> {traducir("type", pet.type)}
-                </div>
-                <div style={infoStyle}>
-                  <strong>Edad:</strong> {pet.age} {pet.age === 1 ? "año" : "años"}
-                </div>
-                <div style={infoStyle}>
-                  <strong>Raza:</strong> {pet.breed}
-                </div>
-                <div style={infoStyle}>
-                  <strong>Género:</strong> {traducir("gender", pet.gender)}
-                </div>
-                <div style={infoStyle}>
-                  <strong>Peso:</strong> {pet.weight}
-                </div>
-                <div style={infoStyle}>
-                  <strong>Tamaño:</strong> {traducir("size", pet.size)}
-                </div>
-                <div style={infoStyle}>
-                  <strong>Color:</strong> {pet.color}
-                </div>
-                <div style={infoStyle}>
-                  <strong>Nivel de ejercicio:</strong>{" "}
+            <div className="pet-detail-info">
+              <h2 className="pet-detail-name">{pet.name}</h2>
+              <div className="pet-detail-badges">
+                <span className="badge badge-type">
+                  {traducir("type", pet.type)}
+                </span>
+                <span className="badge badge-gender">
+                  {traducir("gender", pet.gender)}
+                </span>
+                <span className="badge badge-age">
+                  {pet.age} {pet.age === 1 ? "año" : "años"}
+                </span>
+                <span className="badge badge-size">
+                  {traducir("size", pet.size)}
+                </span>
+                <span className="badge badge-breed">{pet.breed}</span>
+              </div>
+              <ul className="pet-detail-list">
+                <li>
+                  <b>Peso:</b> {pet.weight} kg
+                </li>
+                <li>
+                  <b>Color:</b> {pet.color}
+                </li>
+                <li>
+                  <b>Nivel de ejercicio:</b>{" "}
                   {traducir("exerciseLevel", pet.exerciseLevel)}
-                </div>
-                <div style={infoStyle}>
-                  <strong>Fecha de rescate:</strong>{" "}
-                  {new Date(pet.rescueDate).toLocaleDateString()}
-                </div>
-                <div style={infoStyle}>
-                  <strong>Enfermedades:</strong>{" "}
-                  {pet.diseases.length > 0 ? pet.diseases.join(", ") : "Ninguna"}
-                </div>
-                <div style={infoStyle}>
-                  <strong>Discapacidad:</strong>{" "}
-                  {pet.disability.length > 0 ? pet.disability.join(", ") : "Ninguna"}
-                </div>
-                <div style={infoStyle}>
-                  <strong>Vacunas al día:</strong> {pet.vaccines ? "Sí" : "No"}
-                </div>
+                </li>
+                <li>
+                  <b>Fecha de rescate:</b>{" "}
+                  {pet.rescueDate
+                    ? new Date(pet.rescueDate).toLocaleDateString()
+                    : "No registrada"}
+                </li>
+                <li>
+                  <b>Enfermedades:</b>{" "}
+                  {pet.diseases?.length ? pet.diseases.join(", ") : "Ninguna"}
+                </li>
+                <li>
+                  <b>Discapacidad:</b>{" "}
+                  {pet.disability?.length ? pet.disability.join(", ") : "Ninguna"}
+                </li>
+                <li>
+                  <b>Vacunas al día:</b> {pet.vaccines ? "Sí" : "No"}
+                </li>
+              </ul>
+              <div
+                className={`pet-detail-status ${
+                  pet.status === "AVAILABLE" ? "available" : "adopted"
+                }`}
+              >
+                {traducir("status", pet.status)}
               </div>
-              <div style={statusStyle}>
-                <strong>Estado:</strong> {traducir("status", pet.status)}
-              </div>
-              <div style={buttonContainerStyle}>
+              <div className="pet-detail-actions">
                 <Button
                   variant="warning"
                   size="sm"
-                  className="text-white"
+                  className="pet-detail-btn"
                   onClick={() => navigate(-1)}
                 >
                   ← Volver al listado
@@ -258,8 +161,8 @@ export const PetDetail = () => {
                 {isAdmin && <DeletePetButton petId={petId} navigate={navigate} />}
               </div>
             </div>
-          </div>
-        </div>
+          </section>
+        </main>
       </div>
     </>
   );

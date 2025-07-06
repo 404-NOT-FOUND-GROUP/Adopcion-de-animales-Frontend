@@ -341,3 +341,135 @@
     font-size: 0.85rem;
   }
 }
+
+/* NUEVO: Mejorar responsividad en móviles pequeños */
+@media (max-width: 480px) {
+  .custom-navbar {
+    padding: 0 0.5rem;
+    height: 50px;
+    min-width: 0;
+  }
+
+  .navbar-top {
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    gap: 0;
+    position: relative;
+  }
+
+  .navbar-section {
+    flex: 1 1 0;
+    width: auto;
+    justify-content: center;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+  }
+
+  .navbar-section.left {
+    justify-content: flex-start;
+  }
+
+  .navbar-section.center {
+    position: static;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    height: 100%;
+    width: 100%;
+    background: none;
+    z-index: 1;
+    pointer-events: auto;
+  }
+
+  .nav-logo {
+    width: 60px;
+    height: 25px;
+    margin-left: 0.5rem;
+    margin-right: 0.2rem;
+  }
+
+  .nav-title {
+    font-size: 0.7rem;
+    margin-left: 0.1rem;
+    display: inline-block;
+    white-space: nowrap;
+    position: relative;
+    z-index: 2;
+    background: rgba(144, 208, 0, 0.7);
+    padding: 0 2px;
+    max-width: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .emoji-parade-container {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding-left: 0;
+    margin-left: 0;
+  }
+
+  .emoji-parade {
+    gap: 0.3rem;
+    font-size: 1.1rem;
+    min-width: 0;
+    justify-content: center;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .emoji-animal {
+    font-size: 1.1rem;
+    min-width: 1.1rem;
+    min-height: 1.1rem;
+  }
+
+  .emoji-paw {
+    font-size: 0.7rem;
+    opacity: 1;
+    animation: paw-blink 2s infinite ease-in-out;
+  }
+
+  .user-icon-container {
+    margin-right: 0.2rem;
+    z-index: 3;
+    position: relative;
+  }
+
+  .user-icon-placeholder {
+    width: 22px;
+    height: 22px;
+  }
+
+  .user-menu {
+    top: 30px;
+    right: 0;
+    min-width: 90px;
+    padding: 2px;
+  }
+
+  .user-menu button {
+    padding: 5px;
+    font-size: 0.7rem;
+  }
+
+  .navbar-buttons-bar {
+    height: 28px;
+    padding: 0 0.1rem;
+    gap: 3px;
+    top: 50px;
+  }
+
+  .navbar-link-btn {
+    padding: 2px 5px;
+    font-size: 0.6rem;
+  }
+
+  .nav-title {
+    display: none;
+  }
+}
