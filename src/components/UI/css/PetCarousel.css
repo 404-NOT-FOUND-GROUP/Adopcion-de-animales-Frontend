@@ -1,4 +1,6 @@
 /* --- Contenedor general del carrusel --- */
+/* Solo úsalo si envuelves el slider con esta clase en JSX */
+/*
 .carousel-wrapper {
   position: relative;
   width: 100%;
@@ -8,6 +10,7 @@
   box-sizing: border-box;
   z-index: 1;
 }
+*/
 
 /* Cada slide como bloque centrado */
 .slick-slide > div {
@@ -49,7 +52,7 @@
 .pet-image {
   width: 100%;
   max-width: 220px;
-  aspect-ratio: 1/1;
+  aspect-ratio: 1 / 1;
   margin: 0 auto 1rem auto;
   border-radius: 16px;
   overflow: hidden;
@@ -76,20 +79,6 @@
   font-size: 1.3rem;
   font-weight: 700;
   color: #f72d89;
-}
-
-.pet-name-box {
-  display: inline-block;
-  background: #f72d89;
-  color: #fff;
-  border-radius: 14px;
-  padding: 0.25em 1.2em;
-  font-size: 1.15em;
-  font-weight: 700;
-  box-shadow: 0 2px 8px #f72d8933;
-  border: 2px solid #f72d89;
-  letter-spacing: 1px;
-  transition: background 0.2s, color 0.2s;
 }
 
 /* --- Info y estado --- */
@@ -122,8 +111,6 @@
   flex-wrap: wrap;
 }
 
-.pet-buttons .btn,
-.pet-buttons .btn-warning,
 .pet-button-ver-mas,
 .pet-button-adoptar {
   background: #f72d89 !important;
@@ -138,8 +125,6 @@
   margin-bottom: 0.5rem;
 }
 
-.pet-buttons .btn:hover,
-.pet-buttons .btn-warning:hover,
 .pet-button-ver-mas:hover,
 .pet-button-adoptar:hover {
   background: #fff !important;
@@ -171,7 +156,8 @@
   transform: translateY(-50%);
 }
 
-.slick-arrow:before, .slick-arrow:after {
+.slick-arrow:before,
+.slick-arrow:after {
   content: none !important;
 }
 
@@ -250,10 +236,7 @@
 
 /* Responsividad */
 @media (max-width: 900px) {
-  .carousel-wrapper {
-    max-width: 98vw;
-    padding: 0 2vw;
-  }
+  /* .carousel-wrapper { max-width: 98vw; padding: 0 2vw; } */
   .slick-slide > div {
     max-width: 98vw;
   }
@@ -270,10 +253,7 @@
 }
 
 @media (max-width: 600px) {
-  .carousel-wrapper {
-    max-width: 100vw;
-    padding: 0 1vw;
-  }
+  /* .carousel-wrapper { max-width: 100vw; padding: 0 1vw; } */
   .slick-slide > div {
     max-width: 100vw;
   }
@@ -292,6 +272,7 @@
   }
 }
 
+/* Botón ver más */
 .pet-button-ver-mas {
   min-width: 90px;
   font-weight: 500;
@@ -311,6 +292,7 @@
   color: white;
 }
 
+/* Botón adoptar */
 .pet-button-adoptar {
   min-width: 90px;
   font-weight: 500;
@@ -328,6 +310,7 @@
   filter: brightness(1.1);
 }
 
+/* Ocultar flechas cuando están deshabilitadas */
 .slick-prev.slick-disabled,
 .slick-next.slick-disabled {
   opacity: 0 !important;

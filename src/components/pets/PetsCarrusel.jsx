@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Slider from "react-slick";
 import { getAllPets } from "../../services/api.jsx";
 import "slick-carousel/slick/slick.css";
@@ -19,6 +19,7 @@ export const PetCarousel = () => {
   const navigate = useNavigate();
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const sliderRef = useRef(null);
 
   useEffect(() => {
     const fetchPets = async () => {
@@ -35,9 +36,22 @@ export const PetCarousel = () => {
         setLoading(false);
       }
     };
-
     fetchPets();
   }, []);
+
+  useEffect(() => {
+    if (loading || pets.length === 0) return;
+
+    const autoplayInterval = 5000;
+
+    const intervalId = setInterval(() => {
+      if (sliderRef.current) {
+        sliderRef.current.slickNext();
+      }
+    }, autoplayInterval);
+
+    return () => clearInterval(intervalId);
+  }, [loading, pets]);
 
   if (loading) return <p className="text-center">Cargando mascotas...</p>;
   if (pets.length === 0) return <p className="text-center">No hay mascotas para mostrar.</p>;
@@ -125,15 +139,15 @@ export const PetCarousel = () => {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
-    slidesToShow: 1,
+    speed: 800,
+    slidesToShow: 2,
     slidesToScroll: 1,
     arrows: true,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    pauseOnHover: true,
+    autoplay: false,
     prevArrow: <ArrowLeft />,
     nextArrow: <ArrowRight />,
+    pauseOnHover: false,
+    pauseOnFocus: false,
     responsive: [
       {
         breakpoint: 768,
@@ -147,7 +161,7 @@ export const PetCarousel = () => {
 
   return (
     <div style={{ maxWidth: "950px", margin: "auto", position: "relative" }}>
-      <Slider {...settings}>
+      <Slider ref={sliderRef} {...settings}>
         {pets.map((pet, index) => (
           <div key={pet._id || index}>
             <PetCard pet={pet} />

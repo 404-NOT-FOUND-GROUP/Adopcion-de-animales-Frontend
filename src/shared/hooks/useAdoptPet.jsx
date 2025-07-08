@@ -8,14 +8,52 @@ export const useAdoptPet = (petId) => {
     email: "",
     phone: "",
     address: "",
+    municipality: "",
+    zone: "",
+    refSource: "",
+    petInterest: "",
+    petSize: "",
+    currentPets: false,
+    housingType: "",
+    housingKind: "",
+    interestedPetName: "",
+    conditions: {
+      hungerFree: false,
+      fearFree: false,
+      noAbuse: false,
+      noPain: false,
+      naturalBehavior: false,
+    },
+    commitments: {
+      patience: false,
+      qualityOfLife: false,
+      familyInvolvement: false,
+      timeDedication: false,
+    },
     status: "PROGRESS"
   });
+
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+
+    if (name.startsWith("conditions.") || name.startsWith("commitments.")) {
+      const [group, field] = name.split(".");
+      setForm(prev => ({
+        ...prev,
+        [group]: {
+          ...prev[group],
+          [field]: checked,
+        }
+      }));
+    } else if (type === "checkbox") {
+      setForm({ ...form, [name]: checked });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -32,6 +70,28 @@ export const useAdoptPet = (petId) => {
         email: "",
         phone: "",
         address: "",
+        municipality: "",
+        zone: "",
+        refSource: "",
+        petInterest: "",
+        petSize: "",
+        currentPets: false,
+        housingType: "",
+        housingKind: "",
+        interestedPetName: "",
+        conditions: {
+          hungerFree: false,
+          fearFree: false,
+          noAbuse: false,
+          noPain: false,
+          naturalBehavior: false,
+        },
+        commitments: {
+          patience: false,
+          qualityOfLife: false,
+          familyInvolvement: false,
+          timeDedication: false,
+        },
         status: "PROGRESS"
       });
     } catch (err) {

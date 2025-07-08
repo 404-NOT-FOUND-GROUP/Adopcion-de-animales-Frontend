@@ -1,0 +1,190 @@
+/* Contenedor general */
+.adopt-form-container {
+  background: linear-gradient(135deg, #fefeff 0%, #f4fcff 100%);
+  min-height: 100vh;
+  background-image: url("../../../assets/background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+}
+
+.form-wrapper {
+  padding: 2rem 2rem 2rem 2rem; /* conserva el padding que tenías */
+  background-color: rgba(255, 255, 255, 0.3); /* fondo blanco semi-transparente */
+  backdrop-filter: blur(8px); /* desenfoque para efecto vidrio */
+  border-radius: 16px;
+  margin: 1rem; /* evita que pegue en los bordes de la ventana */
+}
+
+
+
+/* Tarjeta central */
+.adopt-form-card {
+  background-color: rgba(255, 255, 255, 0.65); /* Más opaca */
+  border-radius: 18px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  width: 100%;
+  max-width: 950px;
+  border: none;
+  backdrop-filter: blur(10px); /* opcional, para efecto cristal */
+}
+
+
+/* Título */
+.form-title {
+  color: #01aeb9;
+  font-weight: 700;
+}
+
+.form-subtitle {
+  color: #6c757d;
+  font-size: 0.95rem;
+}
+
+/* Emoji decorativo */
+.emoji {
+  font-size: 48px;
+  color: #f72d89;
+}
+
+/* Etiquetas e inputs */
+.adopt-form-card .form-control,
+.adopt-form-card .form-select {
+  border: 2px solid #01aeb9;
+  border-radius: 8px;
+  box-shadow: none;
+  transition: border-color 0.3s ease;
+}
+
+.adopt-form-card .form-control:focus,
+.adopt-form-card .form-select:focus {
+  border-color: #f72d89;
+  box-shadow: 0 0 0 0.1rem rgba(247, 45, 137, 0.25);
+}
+
+.form-label {
+  color: #333;
+  font-weight: 600;
+}
+
+/* Errores */
+.form-error {
+  font-size: 0.875rem;
+  color: #dc3545;
+  margin-top: 4px;
+}
+
+/* Botones */
+.btn-submit {
+  background: linear-gradient(90deg, #f72d89 0%, #01aeb9 100%);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-submit:hover:enabled {
+  background: linear-gradient(90deg, #f72d89 20%, #01aeb9 80%);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+  background: linear-gradient(90deg, #90d101 0%, #01aeb9 100%);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background: linear-gradient(90deg, #90d101 20%, #01aeb9 80%);
+}
+
+/* Títulos de secciones */
+.form-section-title {
+  color: #90d101;
+  font-weight: 600;
+  margin-top: 1.8rem;
+  margin-bottom: 0.8rem;
+}
+
+/* --- NUEVO CSS: FORMULARIO DOS COLUMNAS --- */
+
+/* Grid para el formulario */
+.adopt-form-card form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem 2rem; /* fila 1.5rem, columna 2rem */
+  align-items: start;
+}
+
+/* Items que ocupan ambas columnas */
+.adopt-form-card form > .form-grid-fullwidth,
+.adopt-form-card form > h5.form-section-title,
+.adopt-form-card form > button {
+  grid-column: span 2;
+}
+
+/* Inputs individuales en grid */
+.form-grid-item {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ajuste checkbox en bloque */
+.form-check.form-grid-fullwidth {
+  margin-bottom: 0.6rem;
+}
+
+/* Errores que ocupan ancho completo */
+.form-error {
+  grid-column: span 2;
+}
+
+/* Responsivo: una columna en pantallas pequeñas */
+@media (max-width: 991.98px) {
+  .adopt-form-card form {
+    display: block;
+  }
+  .adopt-form-card form > .form-grid-fullwidth,
+  .adopt-form-card form > h5.form-section-title,
+  .adopt-form-card form > button {
+    grid-column: auto;
+  }
+  .form-error {
+    grid-column: auto;
+  }
+}
+
+/* Ajustes para móviles */
+@media (max-width: 575.98px) {
+  .adopt-form-card {
+    padding: 1rem;
+  }
+
+  .form-title {
+    font-size: 1.5rem;
+  }
+
+  .form-label,
+  .form-control,
+  .form-select {
+    font-size: 1rem;
+  }
+
+  .btn {
+    font-size: 1rem;
+  }
+}
