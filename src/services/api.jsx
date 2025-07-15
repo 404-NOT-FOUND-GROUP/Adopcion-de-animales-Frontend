@@ -163,29 +163,46 @@ export const deletePetById = async (petId) => {
 };
 
 
-  export const adoptPetById = async (petId, data) => {
-    try {
-      const userDetails = JSON.parse(localStorage.getItem("userDetails"));
-      if (!userDetails || !userDetails.token) {
-        throw new Error("No hay token válido en localStorage");
-      }
-      const token = userDetails.token;
-
-      const response = await apiClient.post(`/form/${petId}`,data,{
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      return response.data;
-    } catch (e) {
-      return {
-        error: true,
-        e,
-      };
+export const adoptPetById = async (petId, data, files) => {
+  try {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    if (!userDetails || !userDetails.token) {
+      throw new Error("No hay token válido en localStorage");
     }
+    const token = userDetails?.token;
+
+    const formData = new FormData();
+
+    for (const key in data) {
+      if (typeof data[key] === "object" && data[key] !== null) {
+        formData.append(key, JSON.stringify(data[key]));
+      } else {
+        formData.append(key, data[key]);
+      }
+    }
+
+    if (files?.dpiImage) {
+      formData.append("dpiImage", files.dpiImage);
+    }
+    if (files?.receiptPdf) {
+      formData.append("receiptPdf", files.receiptPdf);
+    }
+
+    const response = await apiClient.post(`/form/${petId}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (e) {
+    return {
+      error: true,
+      e,
+    };
   }
+};
+
 
   // Revisar un formulario existente
   export const reviewForm = async (formId, data) => {

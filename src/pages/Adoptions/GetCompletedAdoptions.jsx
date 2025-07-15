@@ -14,7 +14,7 @@ export const GetCompletedAdoptions = () => {
       <NavBar />
       <div style={{ flex: 1, display: "flex", marginTop: "180px" }}>
         <Sidebar />
-        <div className="container-fluid p-4" style={{ marginLeft: "250px", width: "100%" }}>
+        <div className="container-fluid p-4" >
           <div className="row justify-content-center">
             <div className="col-lg-10 col-xl-10">
               <div className="bg-light p-5 shadow rounded-4 border border-secondary-subtle">

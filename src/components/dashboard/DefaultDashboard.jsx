@@ -48,10 +48,11 @@ const turquoiseImages = [
 export const DefaultDashboard = () => {
   const { isAdmin } = useAuth();
 
-  return (    <div
+  return (    
+  <div
       className="dashboard-container"
       style={{
-        backgroundImage: `url(${bgImage})`,
+        backgroundImage:  `url(${bgImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -59,8 +60,8 @@ export const DefaultDashboard = () => {
       }}
     >
       <NavBar />
-      <div className="dashboard-main">
         {isAdmin && <Sidebar className="dashboard-sidebar" />}
+      <div className="dashboard-main">
         <main className="dashboard-content dashboard-center-box">
           <PetCarousel />
           <br />

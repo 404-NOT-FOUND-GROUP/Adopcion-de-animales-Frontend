@@ -1,16 +1,58 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { createWorker } from "tesseract.js";
 import { useAdoptPet } from "../../shared/hooks/useAdoptPet";
 import { Sidebar } from "../../components/nav/Sidebar";
 import { NavBar } from "../../components/nav/NavBar";
 import "../../components/UI/css/AdoptPetForm.css";
 import { validateDpi, validateDpiMessage } from "../../shared/validators/ValidateDpi";
+import { preprocessImage } from "../../shared/utils/preprocessImage"; // asegúrate de que existe
 
 export const AdoptPetForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { form, handleChange, handleSubmit, loading, success, error } = useAdoptPet(id);
   const [dpiError, setDpiError] = useState("");
+  const [ocrError, setOcrError] = useState("");
+  const [ocrLoading, setOcrLoading] = useState(false);
+  const [files, setFiles] = useState({
+    dpiImage: null,
+    receiptAndHousePdf: null,
+  });
+
+  const normalizeText = (str) =>
+    str.toLowerCase().replace(/\s+/g, "").replace(/[^0-9]/g, "");
+
+  const validateDpiImage = async (file) => {
+    setOcrError("");
+    setOcrLoading(true);
+
+    try {
+      const preprocessed = await preprocessImage(file);
+      const worker = await createWorker("spa");
+      const { data: { text } } = await worker.recognize(preprocessed);
+      await worker.terminate();
+
+      const cleanedText = normalizeText(text);
+      const cleanedDpi = normalizeText(form.dpi);
+
+      console.log("Texto OCR:", cleanedText);
+
+      if (!cleanedText.includes(cleanedDpi)) {
+        setOcrError("El DPI en la imagen no coincide con el DPI ingresado.");
+        setOcrLoading(false);
+        return false;
+      }
+
+      setOcrLoading(false);
+      return true;
+    } catch (error) {
+      console.error("OCR error:", error);
+      setOcrError("Error al leer la imagen del DPI.");
+      setOcrLoading(false);
+      return false;
+    }
+  };
 
   const handleDpiChange = (e) => {
     handleChange(e);
@@ -21,14 +63,40 @@ export const AdoptPetForm = () => {
     }
   };
 
-  const onSubmit = (e) => {
+  const handleDpiImageChange = async (e) => {
+    const file = e.target.files[0];
+    setFiles((prev) => ({ ...prev, dpiImage: file }));
+    if (file) {
+      const valid = await validateDpiImage(file);
+      if (!valid) {
+        setFiles((prev) => ({ ...prev, dpiImage: null }));
+      }
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const { name, files: selectedFiles } = e.target;
+    setFiles((prev) => ({
+      ...prev,
+      [name]: selectedFiles[0],
+    }));
+  };
+
+  const onSubmit = async (e) => {
     e.preventDefault();
     if (!validateDpi(form.dpi)) {
       setDpiError(validateDpiMessage);
       return;
     }
+    if (!files.dpiImage) {
+      setOcrError("Debes subir una imagen válida del DPI.");
+      return;
+    }
+    if (ocrError) return;
+
     setDpiError("");
-    handleSubmit(e);
+    setOcrError("");
+    await handleSubmit(e, files);
   };
 
   const renderConditionLabel = (key) => {
@@ -52,7 +120,6 @@ export const AdoptPetForm = () => {
     return labels[key] || key;
   };
 
-  // Inputs que van en el formulario con su configuración
   const inputFields = [
     { label: "Nombre completo", name: "fullName" },
     { label: "DPI", name: "dpi", onChange: handleDpiChange, error: dpiError },
@@ -62,19 +129,15 @@ export const AdoptPetForm = () => {
     { label: "Municipio", name: "municipality" },
     { label: "Zona", name: "zone" },
     { label: "Tipo de mascota que deseas", name: "petInterest", placeholder: "Ej: Perro, Gato, Aves..." },
-    { label: "Nombre de la mascota que te interesa", name: "interestedPetName" },
   ];
 
   return (
-    <div className="d-flex flex-column adopt-form-container">
+    <>
       <NavBar />
-      <div className="form-wrapper">
-        <Sidebar />
-        <main
-          className="flex-grow-1 d-flex justify-content-center"
-          style={{ marginLeft: "150px", paddingTop: "130px", paddingBottom: "40px" }}
-          role="main"
-        >
+      <Sidebar />
+      <div className="page-wrapper">
+        <br /><br /><br /><br />
+        <main className="flex-grow-1 d-flex justify-content-center" role="main">
           <div className="card adopt-form-card">
             <div className="text-center mb-3">
               <span className="emoji">🐾</span>
@@ -83,7 +146,6 @@ export const AdoptPetForm = () => {
             </div>
 
             <form onSubmit={onSubmit} noValidate>
-              {/* Inputs divididos en dos columnas */}
               {inputFields.map(({ label, name, type = "text", onChange = handleChange, placeholder = "", error }) => (
                 <div className="mb-3 form-grid-item" key={name}>
                   <label className="form-label fw-semibold">{label}</label>
@@ -100,7 +162,42 @@ export const AdoptPetForm = () => {
                 </div>
               ))}
 
-              {/* Selects y otros campos que ocupan todo el ancho */}
+              <div className="mb-3 form-grid-fullwidth">
+                <label className="form-label fw-semibold">Foto del DPI</label>
+                <input
+                  type="file"
+                  name="dpiImage"
+                  accept="image/*"
+                  className="form-control"
+                  onChange={handleDpiImageChange}
+                  required
+                />
+                {ocrError && <div className="form-error">{ocrError}</div>}
+                {ocrLoading && (
+                  <div className="progress my-2">
+                    <div
+                      className="progress-bar progress-bar-striped progress-bar-animated"
+                      role="progressbar"
+                      style={{ width: "100%" }}
+                    >
+                      Validando DPI...
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="mb-3 form-grid-fullwidth">
+                <label className="form-label fw-semibold">Recibo + Fotos de la casa (PDF)</label>
+                <input
+                  type="file"
+                  name="receiptPdf"
+                  accept="application/pdf"
+                  className="form-control"
+                  onChange={handleFileChange}
+                  required
+                />
+              </div>
+
               <div className="mb-3 form-grid-fullwidth">
                 <label className="form-label fw-semibold">¿Cómo te enteraste?</label>
                 <select name="refSource" className="form-select" value={form.refSource || ""} onChange={handleChange} required>
@@ -153,7 +250,6 @@ export const AdoptPetForm = () => {
                 </select>
               </div>
 
-              {/* Condiciones - ocupan todo el ancho */}
               <h5 className="form-section-title form-grid-fullwidth">Condiciones que aceptas</h5>
               {Object.entries(form.conditions || {}).map(([key, value]) => (
                 <div key={key} className="form-check form-grid-fullwidth">
@@ -171,7 +267,6 @@ export const AdoptPetForm = () => {
                 </div>
               ))}
 
-              {/* Compromisos - ocupan todo el ancho */}
               <h5 className="form-section-title form-grid-fullwidth">Compromisos de adopción</h5>
               {Object.entries(form.commitments || {}).map(([key, value]) => (
                 <div key={key} className="form-check form-grid-fullwidth">
@@ -189,11 +284,18 @@ export const AdoptPetForm = () => {
                 </div>
               ))}
 
-              <button className="btn btn-submit w-100" disabled={loading || !!dpiError}>
+              <button
+                className="btn btn-submit w-100"
+                disabled={loading || !!dpiError || !!ocrError || ocrLoading}
+              >
                 {loading ? "Enviando..." : "Enviar solicitud"}
               </button>
 
-              <button type="button" className="btn btn-cancel w-100 mt-3" onClick={() => navigate("/dashboard")}>
+              <button
+                type="button"
+                className="btn btn-cancel w-100 mt-3"
+                onClick={() => navigate("/dashboard")}
+              >
                 ← Regresar al Inicio
               </button>
 
@@ -203,6 +305,6 @@ export const AdoptPetForm = () => {
           </div>
         </main>
       </div>
-    </div>
+    </>
   );
 };

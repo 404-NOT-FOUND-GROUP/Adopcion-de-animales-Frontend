@@ -39,8 +39,9 @@ export const PetList = () => {
   return (
     <>
       <NavBar />
-      <div className="pet-list-main">
         <Sidebar />
+      <div className="pet-list-main">
+        
         <div className="pet-filters-section">
           <div className="filter-group">
             <h4>

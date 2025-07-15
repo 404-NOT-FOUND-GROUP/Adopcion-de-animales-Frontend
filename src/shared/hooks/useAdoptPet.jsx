@@ -16,7 +16,6 @@ export const useAdoptPet = (petId) => {
     currentPets: false,
     housingType: "",
     housingKind: "",
-    interestedPetName: "",
     conditions: {
       hungerFree: false,
       fearFree: false,
@@ -30,7 +29,7 @@ export const useAdoptPet = (petId) => {
       familyInvolvement: false,
       timeDedication: false,
     },
-    status: "PROGRESS"
+    status: "PROGRESS",
   });
 
   const [loading, setLoading] = useState(false);
@@ -42,28 +41,34 @@ export const useAdoptPet = (petId) => {
 
     if (name.startsWith("conditions.") || name.startsWith("commitments.")) {
       const [group, field] = name.split(".");
-      setForm(prev => ({
+      setForm((prev) => ({
         ...prev,
         [group]: {
           ...prev[group],
           [field]: checked,
-        }
+        },
       }));
     } else if (type === "checkbox") {
-      setForm({ ...form, [name]: checked });
+      setForm((prev) => ({ ...prev, [name]: checked }));
     } else {
-      setForm({ ...form, [name]: value });
+      setForm((prev) => ({ ...prev, [name]: value }));
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, files) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     setSuccess(null);
+
     try {
-      await adoptPetById(petId, form);
+      const response = await adoptPetById(petId, form, files);
+
+      if (response.error) throw response.e;
+
       setSuccess("¡Solicitud enviada correctamente!");
+
+      // Reiniciar formulario
       setForm({
         fullName: "",
         dpi: "",
@@ -78,7 +83,6 @@ export const useAdoptPet = (petId) => {
         currentPets: false,
         housingType: "",
         housingKind: "",
-        interestedPetName: "",
         conditions: {
           hungerFree: false,
           fearFree: false,
@@ -92,11 +96,13 @@ export const useAdoptPet = (petId) => {
           familyInvolvement: false,
           timeDedication: false,
         },
-        status: "PROGRESS"
+        status: "PROGRESS",
       });
     } catch (err) {
-      setError("Error al enviar la solicitud.", err);
+      setError("Error al enviar la solicitud.");
+      console.error("Formulario error:", err);
     }
+
     setLoading(false);
   };
 
@@ -106,6 +112,6 @@ export const useAdoptPet = (petId) => {
     handleSubmit,
     loading,
     success,
-    error
+    error,
   };
 };

@@ -205,9 +205,12 @@
 }
 
 @media (max-width: 600px) {
+  .pet-list-main {
+  padding-top: 5rem;
+}
   .pet-list-container {
     gap: 1rem;
-    padding: 0.5rem;
+    padding: 2px;
   }
   .pet-list-card {
     width: 98vw;
