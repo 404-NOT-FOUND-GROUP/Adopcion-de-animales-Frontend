@@ -6,7 +6,7 @@ import { Sidebar } from "../../components/nav/Sidebar.jsx";
 import { useNavigate } from "react-router-dom";
 import "../../components/UI/css/petList.css";
 
-const cloudName = "dkmmydkxt";
+const cloudName = "dqoobhkdv";
 const getImageUrl = (path) => {
   if (!path) return "";
   if (path.startsWith("http://") || path.startsWith("https://")) return path;

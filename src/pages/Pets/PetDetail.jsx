@@ -8,7 +8,7 @@ import { useAuth } from "../../shared/hooks/useAuth";
 import { DeletePetButton } from "./DeletePetButtom.jsx";
 import "../../components/UI/css/PetDetail.css";
 
-const cloudName = "dkmmydkxt";
+const cloudName = "dqoobhkdv";
 const getImageUrl = (path) =>
   `https://res.cloudinary.com/${cloudName}/image/upload/${path}`;
 

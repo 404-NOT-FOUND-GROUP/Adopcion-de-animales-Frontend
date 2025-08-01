@@ -7,7 +7,7 @@ import "../UI/css/PetCarousel.css";
 import { useNavigate } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-const cloudName = "dkmmydkxt";
+const cloudName = "dqoobhkdv";
 
 const getImageUrl = (path) => {
   if (!path) return "";

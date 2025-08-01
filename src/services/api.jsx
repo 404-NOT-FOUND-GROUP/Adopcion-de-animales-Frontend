@@ -175,9 +175,7 @@ export const adoptPetById = async (petId, data, files) => {
 
     for (const key in data) {
       if (key === "conditions" || key === "commitments") {
-        for (const subKey in data[key]) {
-          formData.append(subKey, data[key][subKey].toString());
-        }
+        formData.append(key, JSON.stringify(data[key])); // <-- Cambia esto
       } else {
         formData.append(key, data[key]);
       }

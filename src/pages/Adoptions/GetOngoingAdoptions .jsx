@@ -3,11 +3,7 @@ import { useGetOngoingAdoptions } from "../../shared/hooks/useGetOngoingAdoption
 import { useReviewForm } from "../../shared/hooks/useReviewForm.jsx";
 import { NavBar } from "../../components/nav/NavBar.jsx";
 import { Sidebar } from "../../components/nav/Sidebar.jsx";
-import { Document, Page, pdfjs } from "react-pdf";
 import "../../components/UI/css/GetOngoingAdoptions.css";
-
-// Worker remoto para evitar problemas con Vite
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const conditionLabels = {
   hungerFree: "Libre de hambre, sed y desnutrición",
@@ -25,15 +21,9 @@ const commitmentLabels = {
 };
 
 const PreviewModal = ({ url, type, onClose }) => {
-  const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
-
   if (!url) return null;
 
-  const onDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages);
-    setPageNumber(1);
-  };
+  const isPdfValid = type === "pdf" && !!url;
 
   return (
     <div
@@ -43,10 +33,7 @@ const PreviewModal = ({ url, type, onClose }) => {
       role="dialog"
       tabIndex={-1}
     >
-      <div
-        className="preview-modal-content"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="preview-modal-content" onClick={(e) => e.stopPropagation()}>
         <button
           className="preview-modal-close"
           onClick={onClose}
@@ -64,43 +51,19 @@ const PreviewModal = ({ url, type, onClose }) => {
             />
           )}
           {type === "pdf" && (
-            <div className="preview-modal-pdf">
-              <Document
-                file={url}
-                onLoadSuccess={onDocumentLoadSuccess}
-                loading={<p>Cargando PDF...</p>}
-                noData={<p>No se encontró PDF</p>}
-                error={<p>Error cargando PDF</p>}
-              >
-                <Page
-                  pageNumber={pageNumber}
-                  width={window.innerWidth * 0.65}
-                  renderTextLayer={false}
-                  renderAnnotationLayer={false}
-                />
-              </Document>
-              {numPages > 1 && (
-                <div className="preview-modal-pdf-controls">
-                  <button
-                    onClick={() => setPageNumber((p) => Math.max(p - 1, 1))}
-                    disabled={pageNumber === 1}
-                    aria-label="Página anterior"
-                  >
-                    ◀️
-                  </button>
-                  <span>
-                    Página {pageNumber} de {numPages}
-                  </span>
-                  <button
-                    onClick={() => setPageNumber((p) => Math.min(p + 1, numPages))}
-                    disabled={pageNumber === numPages}
-                    aria-label="Página siguiente"
-                  >
-                    ▶️
-                  </button>
-                </div>
-              )}
-            </div>
+            isPdfValid ? (
+              <iframe
+                src={url}
+                title="Vista previa PDF"
+                width="100%"
+                height="600px"
+                style={{ border: "none" }}
+              />
+            ) : (
+              <p style={{ color: "red" }}>
+                URL inválida para PDF. Asegúrate que la URL es accesible públicamente.
+              </p>
+            )
           )}
         </div>
       </div>
@@ -121,8 +84,12 @@ export const GetOngoingAdoptions = () => {
   };
 
   const openPreview = (type, url) => {
+    let previewUrl = url;
+    if (type === "pdf" && url && !url.endsWith(".pdf")) {
+      previewUrl = url + ".pdf";
+    }
     setPreviewType(type);
-    setPreviewUrl(url);
+    setPreviewUrl(previewUrl);
   };
 
   const closePreview = () => {

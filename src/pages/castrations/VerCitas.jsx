@@ -19,6 +19,9 @@ export const VerCitas = () => {
           marginBottom: "40px",
         }}
       >
+        <br />
+        <br />
+        <br />
         <h2 className="mb-4 text-center fw-bold text-primary">
           Citas de Castración
         </h2>

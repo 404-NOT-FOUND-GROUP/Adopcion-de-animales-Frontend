@@ -2,10 +2,10 @@
 
 .sidebar-container {
   position: fixed;
-  top: 80px; /* Ajuste para que quede justo debajo del navbar */
+  top: 100px; 
   left: 0;
   width: 240px;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 100px);
   background: linear-gradient(180deg, #00c9ff 0%, #92fe9d 100%);
   padding: 1rem;
   font-family: 'Quicksand', sans-serif;
@@ -16,15 +16,13 @@
   border-top-right-radius: 10px;
 }
 
-/* Sidebar oculta */
 .sidebar-container.collapsed {
   transform: translateX(-100%);
 }
 
-/* Botón que abre/cierra */
 .sidebar-toggle-btn {
   position: fixed;
-  top: 80px; /* o el alto exacto de tu navbar */
+  top: 130px; 
   left: 10px;
   background: linear-gradient(180deg, #00c9ff 0%, #92fe9d 100%);
   color: #fff;
@@ -35,7 +33,7 @@
   width: 40px;
   height: 40px;
   font-size: 1.3rem;
-  z-index: 2100; /* asegúrate de que está encima de todo */
+  z-index: 2100; 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -117,7 +115,6 @@
   background-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Fade animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -129,7 +126,6 @@
   }
 }
 
-/* Responsive para tablets */
 @media (max-width: 1024px) {
   .sidebar-container {
     width: 220px;
@@ -139,7 +135,7 @@
   }
 
   .sidebar-toggle-btn {
-    top: 75px;
+    top: 130px;
     left: 10px;
     width: 38px;
     height: 38px;
@@ -164,7 +160,6 @@
   }
 }
 
-/* Responsive para móviles */
 @media (max-width: 768px) {
   .sidebar-container {
     width: 80vw;
@@ -177,7 +172,7 @@
   }
 
   .sidebar-toggle-btn {
-    top: 66px;
+    top: 100px; 
     left: 10px;
     width: 36px;
     height: 36px;
@@ -206,7 +201,7 @@
   }
 }
 
-/* Extra ajuste para celulares pequeños */
+
 @media (max-width: 480px) {
   .sidebar-container {
     padding: 0.5rem 0.6rem;
@@ -215,7 +210,7 @@
   }
 
   .sidebar-toggle-btn {
-    top: 68px;
+    top: 130px;
     left: 10px;
     font-size: 1.1rem;
     width: 34px;
@@ -231,17 +226,16 @@
   }
 }
 
-/* Nueva regla para mover el contenido cuando el sidebar está visible */
+
 @media (min-width: 769px) {
   .with-sidebar {
-    margin-left: 260px; /* Igual al ancho de tu sidebar */
+    margin-left: 260px;
   }
 }
 
-/* Ajuste al botón toggle para que quede fijo y encima */
+
 .sidebar-toggle-btn {
-  position: fixed;
-  top: 80px; /* o el alto exacto de tu navbar */
+  position: fixed; 
   left: 10px;
-  z-index: 2100; /* asegúrate de que está encima de todo */
+  z-index: 2100; 
 }

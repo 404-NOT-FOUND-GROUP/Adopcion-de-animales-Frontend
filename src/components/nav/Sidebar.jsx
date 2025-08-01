@@ -8,6 +8,7 @@ export const Sidebar = () => {
   const navigate = useNavigate();
   const { isAdmin, isVet } = useAuth();
 
+  // Mostrar sidebar solo si es admin o vet
   if (!isAdmin && !isVet) return null;
 
   const toggleSection = (section) => {
@@ -33,83 +34,91 @@ export const Sidebar = () => {
         <div className="sidebar-header">🐾 Sistema de Adopción</div>
 
         <div className="sidebar-menu">
-          <div className="sidebar-section">
-            <button
-              className="sidebar-title clickable"
-              onClick={() => toggleSection("mascotas")}
-            >
-              <span>🐶 Mascotas</span>
-              <span>{openSection === "mascotas" ? "▲" : "▼"}</span>
-            </button>
-            {openSection === "mascotas" && (
-              <div className="sidebar-submenu">
-                <div
-                  className="sidebar-subitem"
-                  onClick={() => goTo("/mascotas/nueva")}
+          {/* Solo mostrar módulos completos si es admin */}
+          {isAdmin && (
+            <>
+              <div className="sidebar-section">
+                <button
+                  className="sidebar-title clickable"
+                  onClick={() => toggleSection("mascotas")}
                 >
-                  Agregar
-                </div>
+                  <span>🐶 Mascotas</span>
+                  <span>{openSection === "mascotas" ? "▲" : "▼"}</span>
+                </button>
+                {openSection === "mascotas" && (
+                  <div className="sidebar-submenu">
+                    <div
+                      className="sidebar-subitem"
+                      onClick={() => goTo("/mascotas/nueva")}
+                    >
+                      Agregar
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
 
-          <div className="sidebar-section">
-            <button
-              className="sidebar-title clickable"
-              onClick={() => toggleSection("solicitudes")}
-            >
-              <span>📄 Solicitudes de Adopción</span>
-              <span>{openSection === "solicitudes" ? "▲" : "▼"}</span>
-            </button>
-            {openSection === "solicitudes" && (
-              <div className="sidebar-submenu">
-                <div
-                  className="sidebar-subitem"
-                  onClick={() => goTo("/report/ongoing")}
+              <div className="sidebar-section">
+                <button
+                  className="sidebar-title clickable"
+                  onClick={() => toggleSection("solicitudes")}
                 >
-                  Solicitudes Recientes
-                </div>
-                <div
-                  className="sidebar-subitem"
-                  onClick={() => goTo("/report/completed")}
-                >
-                  Solicitudes Finalizadas
-                </div>
+                  <span>📄 Solicitudes de Adopción</span>
+                  <span>{openSection === "solicitudes" ? "▲" : "▼"}</span>
+                </button>
+                {openSection === "solicitudes" && (
+                  <div className="sidebar-submenu">
+                    <div
+                      className="sidebar-subitem"
+                      onClick={() => goTo("/report/ongoing")}
+                    >
+                      Solicitudes Recientes
+                    </div>
+                    <div
+                      className="sidebar-subitem"
+                      onClick={() => goTo("/report/completed")}
+                    >
+                      Solicitudes Finalizadas
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </>
+          )}
 
-          <div className="sidebar-section">
-            <button
-              className="sidebar-title clickable"
-              onClick={() => toggleSection("castraciones")}
-            >
-              <span>🐶🐱 Castraciones</span>
-              <span>{openSection === "castraciones" ? "▲" : "▼"}</span>
-            </button>
-            {openSection === "castraciones" && (
-              <div className="sidebar-submenu">
-                <div
-                  className="sidebar-subitem"
-                  onClick={() => goTo("/castraciones/obtenerCitas")}
-                >
-                  Ver citas
+          {/* El módulo de castraciones lo ven admin y vet */}
+          {(isAdmin || isVet) && (
+            <div className="sidebar-section">
+              <button
+                className="sidebar-title clickable"
+                onClick={() => toggleSection("castraciones")}
+              >
+                <span>🐶🐱 Castraciones</span>
+                <span>{openSection === "castraciones" ? "▲" : "▼"}</span>
+              </button>
+              {openSection === "castraciones" && (
+                <div className="sidebar-submenu">
+                  <div
+                    className="sidebar-subitem"
+                    onClick={() => goTo("/castraciones/obtenerCitas")}
+                  >
+                    Ver citas
+                  </div>
+                  <div
+                    className="sidebar-subitem"
+                    onClick={() => goTo("/castraciones/listarCitasActivas")}
+                  >
+                    Citas Aceptadas
+                  </div>
+                  <div
+                    className="sidebar-subitem"
+                    onClick={() => goTo("/castraciones/obtenerCitascompletadas")}
+                  >
+                    Citas Completadas
+                  </div>
                 </div>
-                <div
-                  className="sidebar-subitem"
-                  onClick={() => goTo("/castraciones/listarCitasActivas")}
-                >
-                  Citas Aceptadas
-                </div>
-                <div
-                  className="sidebar-subitem"
-                  onClick={() => goTo("/castraciones/obtenerCitascompletadas")}
-                >
-                  Citas Completadas
-                </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </>
