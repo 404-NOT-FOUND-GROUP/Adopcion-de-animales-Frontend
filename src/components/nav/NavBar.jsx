@@ -185,6 +185,15 @@ export const NavBar = () => {
           🐾 Mascotas
           
         </button>
+        <button
+          className="navbar-link-btn"
+          onClick={() => handleNavigate('/castraciones')}
+          aria-label="Listar mascotas"
+          type="button"
+        >
+          🐶✂️🐱 Castraciones
+          
+        </button>
       </div>
     </>
   );

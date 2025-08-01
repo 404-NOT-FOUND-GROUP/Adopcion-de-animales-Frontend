@@ -5,6 +5,11 @@ import { DefaultDashboard } from "./components/dashboard/DefaultDashboard";
 import { ProtectedRoute } from "./components/routes/ProtectedRoute";
 import { NotFoundPage } from "./pages/notFound";
 import { QuienesSomos } from "./pages/quienessomos/QuienesSomos.jsx";
+import { CrearCita } from "./pages/castrations/CrearCita.jsx";
+import { VerCitas } from "./pages/castrations/VerCitas.jsx";
+import { CitaDetalle } from "./pages/castrations/CitaDetalle.jsx";
+import { CitasCompletadas } from "./pages/castrations/CitasCompletadas.jsx";
+import { CitasAceptadas } from "./pages/castrations/CitasAceptadas.jsx";
 import { PetList } from "./pages/Pets/petList.jsx";
 import {PetDetail} from "./pages/Pets/PetDetail.jsx";
 import { AddPet } from "./pages/Pets/AddPet.jsx";
@@ -68,6 +73,46 @@ export const routes = [
     element: (
       <ProtectedRoute>
         <GetCompletedAdoptions />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/castraciones",
+    element: (
+      <ProtectedRoute>
+        <CrearCita />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/castraciones/obtenerCitas",
+    element: (
+      <ProtectedRoute>
+        <VerCitas />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/castraciones/:id",
+    element: (
+      <ProtectedRoute>
+        <CitaDetalle />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/castraciones/listarCitasActivas",
+    element: (
+      <ProtectedRoute>
+        <CitasAceptadas/>
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/castraciones/obtenerCitascompletadas",
+    element: (
+      <ProtectedRoute>
+        <CitasCompletadas/>
       </ProtectedRoute>
     )
   },

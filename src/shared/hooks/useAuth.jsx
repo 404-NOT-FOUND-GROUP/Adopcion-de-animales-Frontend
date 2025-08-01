@@ -24,6 +24,7 @@ export const useAuth = () => {
   return {
     isAdmin: user?.role === "ADMIN_ROLE",
     isUser: user?.role === "USER_ROLE",
+    isVet: user?.role === "VET_ROLE",
     user,
   };
 };

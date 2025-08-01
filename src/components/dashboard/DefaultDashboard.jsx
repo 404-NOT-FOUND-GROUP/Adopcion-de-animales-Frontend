@@ -46,7 +46,7 @@ const turquoiseImages = [
 ];
 
 export const DefaultDashboard = () => {
-  const { isAdmin } = useAuth();
+  const { isAdmin, isVet } = useAuth();
 
   return (    
   <div
@@ -60,7 +60,7 @@ export const DefaultDashboard = () => {
       }}
     >
       <NavBar />
-        {isAdmin && <Sidebar className="dashboard-sidebar" />}
+        {(isAdmin|| isVet) && <Sidebar className="dashboard-sidebar" />}
       <div className="dashboard-main">
         <main className="dashboard-content dashboard-center-box">
           <PetCarousel />

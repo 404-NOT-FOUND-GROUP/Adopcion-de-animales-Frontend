@@ -105,7 +105,7 @@ import axios from "axios";
         e,
       };
     }
-  };
+  }
 
 
   // Registrar nueva mascota
@@ -287,6 +287,152 @@ export const reviewFormById = async (formId) => {
       error: true,
       e,
     };
+  }
+};
+
+// castraciones 
+export const crearCita = async (data, imageFile) => {
+  try {
+    const formData = new FormData();
+    Object.keys(data).forEach(key => {
+      formData.append(key, data[key]);
+    });
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+
+    const res = await apiClient.post("/castrations/crearCita", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return res.data;
+  } catch (e) {
+    return { error: true, e };
+  }
+};
+
+export const obtenerCitas = async () => {
+  try {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    const token = userDetails?.token;
+
+    const res = await apiClient.get("/castrations/obtenerCitas", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (e) {
+    return { error: true, e };
+  }
+};
+
+export const obtenerCitaPorId = async (id) => {
+  try {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    const token = userDetails?.token;
+
+    const res = await apiClient.get(`/castrations/obtenerCitaPorId/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (e) {
+    return { error: true, e };
+  }
+};
+
+export const aceptarCita = async (id, fechaCita) => {
+  try {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    const token = userDetails?.token;
+
+    const res = await apiClient.put(
+      `/castrations/aceptarCita/${id}`,
+      { fechaCita },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (e) {
+    return { error: true, e };
+  }
+};
+
+export const listarCitasActivas = async () => {
+  try {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    const token = userDetails?.token;
+
+    const res = await apiClient.get("/castrations/listarCitasActivas", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (e) {
+    return { error: true, e };
+  }
+};
+
+export const cancelarCita = async (id, cancelDescription) => {
+  try {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    const token = userDetails?.token;
+
+    const res = await apiClient.put(
+      `/castrations/cancelarCita/${id}`,
+      { cancelDescription },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (e) {
+    return { error: true, e };
+  }
+};
+
+export const completarCita = async (id) => {
+  try {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    const token = userDetails?.token;
+
+    const res = await apiClient.put(
+      `/castrations/completarCita/${id}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (e) {
+    return { error: true, e };
+  }
+};
+
+export const obtenerCitasCompletadas = async () => {
+  try {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    const token = userDetails?.token;
+
+    const res = await apiClient.get("/castrations/obtenerCitascompletadas", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (e) {
+    return { error: true, e };
   }
 };
 

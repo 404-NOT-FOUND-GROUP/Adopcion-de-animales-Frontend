@@ -6,9 +6,9 @@ export const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(true);
   const [openSection, setOpenSection] = useState(null);
   const navigate = useNavigate();
-  const { isAdmin } = useAuth();
+  const { isAdmin, isVet } = useAuth();
 
-  if (!isAdmin) return null;
+  if (!isAdmin && !isVet) return null;
 
   const toggleSection = (section) => {
     setOpenSection(openSection === section ? null : section);
@@ -74,6 +74,38 @@ export const Sidebar = () => {
                   onClick={() => goTo("/report/completed")}
                 >
                   Solicitudes Finalizadas
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="sidebar-section">
+            <button
+              className="sidebar-title clickable"
+              onClick={() => toggleSection("castraciones")}
+            >
+              <span>🐶🐱 Castraciones</span>
+              <span>{openSection === "castraciones" ? "▲" : "▼"}</span>
+            </button>
+            {openSection === "castraciones" && (
+              <div className="sidebar-submenu">
+                <div
+                  className="sidebar-subitem"
+                  onClick={() => goTo("/castraciones/obtenerCitas")}
+                >
+                  Ver citas
+                </div>
+                <div
+                  className="sidebar-subitem"
+                  onClick={() => goTo("/castraciones/listarCitasActivas")}
+                >
+                  Citas Aceptadas
+                </div>
+                <div
+                  className="sidebar-subitem"
+                  onClick={() => goTo("/castraciones/obtenerCitascompletadas")}
+                >
+                  Citas Completadas
                 </div>
               </div>
             )}
