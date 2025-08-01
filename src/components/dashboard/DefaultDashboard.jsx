@@ -20,26 +20,69 @@ const images = [
 const turquoiseImages = [
   {
     src: img8,
-    title: "¡Tu voz salva una vida!",
+    title: "Información de Castraciones y Clínicas",
     desc: (
       <>
-        <p>No mires hacia otro lado. Si ves maltrato animal, tu denuncia es el primer paso para ponerle fin al sufrimiento de un ser indefenso.</p>
-
-        <p><strong>¿Por qué es importante denunciar?</strong></p>
-
+        <p>
+          <strong>📍 Ubicación de nuestra clínica:</strong><br />
+          47 avenida 18 calle 47-07 Col. San José La Chacara, zona 5<br />
+          <strong>⏰ Hora y día:</strong> Martes y jueves de 8am a 4pm y viernes de 8am a 4pm
+        </p>
+        <p>
+          <strong>📍 Ubicación de nuestra clínica:</strong><br />
+          16 avenida 11-54 Colonia Bello Horizonte, zona 21<br />
+          <strong>⏰ Hora y día:</strong> Miércoles de 8am a 4pm y viernes de 9am a 1pm
+        </p>
+        <p>
+          <strong>Dirección de la clínica:</strong><br />
+          Boulevard Tulam Zu, Centro Comercial La Cúpula Local No. 4, Zona 4 Mixco.
+        </p>
+        <hr />
+        <p>
+          <strong>Confirmación de cita para Castración</strong>
+        </p>
+        <p>
+          <strong>Responsable de la mascota</strong>
+        </p>
+        <p>
+          <strong>Datos de la mascota</strong><br />
+          Nombre:<br />
+          Especie:<br />
+          Raza:<br />
+          Edad:<br />
+          Sexo:<br />
+          Peso:<br />
+          <br />
+          Cita:<br />
+          Hora:
+        </p>
+        <hr />
+        <p>
+          <strong>INFORMACIÓN IMPORTANTE:</strong>
+        </p>
         <ul>
-          <li><strong>Detienes el dolor:</strong> Le das una segunda oportunidad a un animal que sufre.</li>
-          <li><strong>Fortaleces la justicia:</strong> Muestras que el maltrato no será tolerado en nuestra sociedad.</li>
-          <li><strong>Ayudas a la comunidad:</strong> Contribuyes a un entorno más seguro y compasivo para todos.</li>
+          <li>
+            Previo a la cirugía se le solicitará firmar una autorización para realizar la castración.
+          </li>
         </ul>
-
-        <p><strong>¡Denuncia!</strong></p>
-
-        <p>Escríbenos al <strong>4479-7830</strong></p>
-
-        <p>O al correo: <strong>denunciasbienestaranimal@muniguate.com</strong></p>
-
-        <p>Recuerda adjuntar pruebas. ¡Mientras más detalles, mejor! Sé la voz de quienes no pueden hablar.</p>
+        <p>
+          <strong>TIEMPO DE AYUNO</strong><br />
+          La mascota 🐶🐱 debe llegar con 12 horas de AYUNO, incluso de agua (Se recomienda retirarle el plato de alimento y agua desde la noche anterior a su cita)
+        </p>
+        <p>
+          <strong>MEDIDAS DE SEGURIDAD</strong>
+        </p>
+        <ul>
+          <li>🐶 Deben llevar correa (agresivo o raza peligrosa también bozal)</li>
+          <li>🐱 Deben ser transportados en jaula, bolso o caja segura.</li>
+        </ul>
+        <p>
+          Se recomienda llevar:
+        </p>
+        <ul>
+          <li>Un pañal desechable acorde al tamaño de la mascota (puede ser de uso humano)</li>
+          <li>Una colchita o frazada.</li>
+        </ul>
       </>
     ),
   }
