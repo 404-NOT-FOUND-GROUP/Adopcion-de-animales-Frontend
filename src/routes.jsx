@@ -9,7 +9,7 @@ import { PetList } from "./pages/Pets/petList.jsx";
 import {PetDetail} from "./pages/Pets/PetDetail.jsx";
 import { AddPet } from "./pages/Pets/AddPet.jsx";
 import { AdoptPetForm } from "./pages/Forms/AdoptPetForm.jsx";
-import { GetOngoingAdoptions } from './pages/Adoptions/GetOngoingAdoptions .jsx';
+import { GetOngoingAdoptions} from "./pages/Adoptions/GetOngoingAdoptions .jsx"
 import { GetCompletedAdoptions } from './pages/Adoptions/GetCompletedAdoptions.jsx';
 import { FogottenPassword  } from './components/authForm/ForgottenPassword.jsx';
 import { UpdatePassword } from './components/authForm/UpdatePassword.jsx';

@@ -1,92 +1,396 @@
-.container {
-  max-width: 900px;
-  margin: 30px auto;
-  padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f9f9f9;
+/* GetOngoingAdoptions.css */
+.adoption-container {
+  padding: 2rem;
+  background-color: #f7f7f7;
+}
+
+.title {
+  color: #01aeb9;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: white;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
 }
 
-h2 {
-  text-align: center;
-  color: #333;
-  margin-bottom: 20px;
+.card h3 {
+  margin-top: 0;
+  color: #f72d89;
 }
 
-p {
-  text-align: center;
-  font-size: 18px;
-  color: #666;
-  margin-top: 30px;
+.card p {
+  margin: 0.5rem 0;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+.buttons {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
-thead {
-  background-color: #4caf50;
+.buttons button {
+  background-color: #90d101;
   color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-thead th {
-  padding: 12px 15px;
-  font-weight: 600;
-  text-align: left;
+.buttons button:hover {
+  opacity: 0.85;
 }
 
-tbody tr {
-  border-bottom: 1px solid #ddd;
-  transition: background-color 0.3s ease;
+.preview-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
 }
 
-tbody tr:hover {
-  background-color: #e8f5e9;
+.preview-content {
+  background: white;
+  padding: 2rem;
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: auto;
 }
 
-tbody td {
-  padding: 12px 15px;
+.close-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.preview-image {
+  max-width: 100%;
+  height: auto;
+}
+
+.pdf-container {
+  text-align: center;
+}
+
+.pdf-controls {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.loading,
+.empty {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 2rem;
+}
+
+.ongoing-adoptions-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f0f4f8;
+}
+
+.ongoing-adoptions-content {
+  flex: 1;
+  display: flex;
+  margin-top: 180px;
+}
+
+.ongoing-adoptions-main {
+  flex-grow: 1;
+  margin-left: 250px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.ongoing-adoptions-title {
+  text-align: center;
+  color: #f72d89;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+}
+
+.ongoing-adoptions-loading {
+  text-align: center;
+  color: #00aeb8;
+}
+
+.ongoing-adoptions-empty {
+  text-align: center;
+  color: #91d100;
+}
+
+.adoption-cards-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+}
+
+.adoption-card {
+  background: #fff;
+  border: 2px solid #f72d89;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 400px;
+}
+
+.adoption-card-header {
+  margin-bottom: 1rem;
+}
+
+.adoption-card-petname {
+  margin: 0 0 0.5rem;
+  color: #00aeb8;
+}
+
+.adoption-card-petinfo {
+  margin: 0;
+  font-style: italic;
   color: #555;
 }
 
-.btn-info:active, .btn-info.active {
-  background-color: #117a8b !important;
-  border-color: #117a8b !important;
+.adoption-card-section {
+  margin-bottom: 1rem;
 }
 
-@media (max-width: 600px) {
-  table, thead, tbody, th, td, tr {
-    display: block;
-  }
+.adoption-card-section-title {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
 
-  thead tr {
-    display: none;
-  }
+.adoption-card-section-title.datos {
+  color: #f72d89;
+}
 
-  tbody tr {
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-  }
+.adoption-card-section-title.condiciones {
+  color: #00aeb8;
+}
 
-  tbody td {
-    padding-left: 50%;
-    position: relative;
-  }
+.adoption-card-section-title.compromisos {
+  color: #91d100;
+}
 
-  tbody td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 15px;
-    top: 12px;
-    font-weight: 700;
-    color: #4caf50;
-  }
+.adoption-card-files {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.adoption-card-btn {
+  border: none;
+  padding: 0.4rem 0.8rem;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.adoption-card-btn.dpi {
+  background-color: #f72d89;
+}
+
+.adoption-card-btn.pdf {
+  background-color: #00aeb8;
+}
+
+.adoption-card-btn.dpi:hover,
+.adoption-card-btn.pdf:hover {
+  filter: brightness(0.95);
+}
+
+.adoption-card-list {
+  padding-left: 1.2rem;
+  margin: 0;
+}
+
+.adoption-card-listitem {
+  color: #555;
+}
+
+.adoption-card-listitem.empty {
+  color: #999;
+  font-style: italic;
+}
+
+.adoption-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.adoption-card-date {
+  color: #777;
+}
+
+.adoption-card-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.adoption-card-status.progress {
+  background-color: #f72d89;
+  height: 30px;
+}
+
+.adoption-card-status.accepted {
+  background-color: #00aeb8;
+}
+
+.adoption-card-status.rejected {
+  background-color: #91d100;
+}
+
+.adoption-card-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.adoption-card-action-btn {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.adoption-card-action-btn.aceptar {
+  background-color: #00aeb8;
+}
+
+.adoption-card-action-btn.rechazar {
+  background-color: #91d100;
+}
+
+.adoption-card-action-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Preview Modal */
+.preview-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.preview-modal-content {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  max-width: 90vw;
+  max-height: 90vh;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 70vw;
+}
+
+.preview-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  font-weight: bold;
+  color: #f72d89;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  user-select: none;
+  z-index: 10;
+}
+
+.preview-modal-body {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  min-width: 300px;
+  position: relative;
+}
+
+.preview-modal-image {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 10px;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+
+.preview-modal-pdf {
+  text-align: center;
+}
+
+.preview-modal-pdf-controls {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  align-items: center;
+  font-weight: bold;
+  color: #555;
+  user-select: none;
+}
+
+.preview-modal-pdf-controls button {
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background: #fff;
+  transition: background 0.2s;
+}
+
+.preview-modal-pdf-controls button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

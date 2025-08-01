@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useRef } from "react";
 import Slider from "react-slick";
-import { getAllPets } from "../../services/api.jsx";
+import { useGetAllPets } from "../../shared/hooks/useGetAllPets";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "../UI/css/PetCarousel.css";
@@ -17,44 +17,8 @@ const getImageUrl = (path) => {
 
 export const PetCarousel = () => {
   const navigate = useNavigate();
-  const [pets, setPets] = useState([]);
-  const [loading, setLoading] = useState(true);
   const sliderRef = useRef(null);
-
-  useEffect(() => {
-    const fetchPets = async () => {
-      try {
-        const res = await getAllPets();
-        if (!res.error) {
-          setPets(res.pets.slice(0, 10));
-        } else {
-          console.error("Error cargando mascotas:", res.error);
-        }
-      } catch (error) {
-        console.error("Error en la llamada getAllPets:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPets();
-  }, []);
-
-  useEffect(() => {
-    if (loading || pets.length === 0) return;
-
-    const autoplayInterval = 5000;
-
-    const intervalId = setInterval(() => {
-      if (sliderRef.current) {
-        sliderRef.current.slickNext();
-      }
-    }, autoplayInterval);
-
-    return () => clearInterval(intervalId);
-  }, [loading, pets]);
-
-  if (loading) return <p className="text-center">Cargando mascotas...</p>;
-  if (pets.length === 0) return <p className="text-center">No hay mascotas para mostrar.</p>;
+  const { pets, isLoading: loading } = useGetAllPets();
 
   const ArrowLeft = (props) => {
     const { className, style, onClick } = props;
@@ -126,6 +90,9 @@ export const PetCarousel = () => {
       </div>
     </div>
   );
+
+  if (loading) return <p className="text-center">Cargando mascotas...</p>;
+  if (!pets || pets.length === 0) return <p className="text-center">No hay mascotas para mostrar.</p>;
 
   if (pets.length === 1) {
     const pet = pets[0];

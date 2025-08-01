@@ -3,8 +3,8 @@ import { useGetOngoingAdoptions } from "../../shared/hooks/useGetOngoingAdoption
 import { useReviewForm } from "../../shared/hooks/useReviewForm.jsx";
 import { NavBar } from "../../components/nav/NavBar.jsx";
 import { Sidebar } from "../../components/nav/Sidebar.jsx";
-
 import { Document, Page, pdfjs } from "react-pdf";
+import "../../components/UI/css/GetOngoingAdoptions.css";
 
 // Worker remoto para evitar problemas con Vite
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -37,89 +37,34 @@ const PreviewModal = ({ url, type, onClose }) => {
 
   return (
     <div
+      className="preview-modal-overlay"
       onClick={onClose}
-      style={{
-        position: "fixed",
-        inset: 0,
-        backgroundColor: "rgba(0,0,0,0.6)",
-        backdropFilter: "blur(5px)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        zIndex: 9999,
-        padding: 20,
-      }}
       aria-modal="true"
       role="dialog"
       tabIndex={-1}
     >
       <div
+        className="preview-modal-content"
         onClick={(e) => e.stopPropagation()}
-        style={{
-          position: "relative",
-          background: "#fff",
-          borderRadius: 12,
-          maxWidth: "90vw",
-          maxHeight: "90vh",
-          boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
-          overflow: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          width: type === "pdf" ? "70vw" : "auto",
-        }}
       >
         <button
+          className="preview-modal-close"
           onClick={onClose}
-          style={{
-            position: "absolute",
-            top: 12,
-            right: 12,
-            background: "transparent",
-            border: "none",
-            fontSize: 28,
-            fontWeight: "bold",
-            color: "#f72d89",
-            cursor: "pointer",
-            lineHeight: 1,
-            padding: 0,
-            userSelect: "none",
-            zIndex: 10,
-          }}
           aria-label="Cerrar vista previa"
         >
           &times;
         </button>
-
-        <div
-          style={{
-            flex: 1,
-            overflow: "auto",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 20,
-            minWidth: 300,
-            position: "relative",
-          }}
-        >
+        <div className="preview-modal-body">
           {type === "image" && (
             <img
               src={url}
               alt="Vista previa"
-              style={{
-                maxWidth: "100%",
-                maxHeight: "80vh",
-                borderRadius: 10,
-                objectFit: "contain",
-                userSelect: "none",
-                pointerEvents: "none",
-              }}
+              className="preview-modal-image"
               draggable={false}
             />
           )}
-
           {type === "pdf" && (
-            <div style={{ textAlign: "center" }}>
+            <div className="preview-modal-pdf">
               <Document
                 file={url}
                 onLoadSuccess={onDocumentLoadSuccess}
@@ -134,30 +79,11 @@ const PreviewModal = ({ url, type, onClose }) => {
                   renderAnnotationLayer={false}
                 />
               </Document>
-
               {numPages > 1 && (
-                <div
-                  style={{
-                    marginTop: 10,
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: 12,
-                    alignItems: "center",
-                    fontWeight: "bold",
-                    color: "#555",
-                    userSelect: "none",
-                  }}
-                >
+                <div className="preview-modal-pdf-controls">
                   <button
                     onClick={() => setPageNumber((p) => Math.max(p - 1, 1))}
                     disabled={pageNumber === 1}
-                    style={{
-                      cursor: pageNumber === 1 ? "not-allowed" : "pointer",
-                      padding: "4px 8px",
-                      borderRadius: 4,
-                      border: "1px solid #ccc",
-                      background: pageNumber === 1 ? "#eee" : "#fff",
-                    }}
                     aria-label="Página anterior"
                   >
                     ◀️
@@ -168,13 +94,6 @@ const PreviewModal = ({ url, type, onClose }) => {
                   <button
                     onClick={() => setPageNumber((p) => Math.min(p + 1, numPages))}
                     disabled={pageNumber === numPages}
-                    style={{
-                      cursor: pageNumber === numPages ? "not-allowed" : "pointer",
-                      padding: "4px 8px",
-                      borderRadius: 4,
-                      border: "1px solid #ccc",
-                      background: pageNumber === numPages ? "#eee" : "#fff",
-                    }}
                     aria-label="Página siguiente"
                   >
                     ▶️
@@ -212,60 +131,32 @@ export const GetOngoingAdoptions = () => {
   };
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "#f0f4f8" }}>
+    <div className="ongoing-adoptions-root">
       <NavBar />
-      <div style={{ flex: 1, display: "flex", marginTop: "180px" }}>
+      <div className="ongoing-adoptions-content">
         <Sidebar />
-        <main
-          style={{
-            flexGrow: 1,
-            marginLeft: "250px",
-            padding: "20px",
-            maxWidth: "1200px",
-            margin: "auto",
-          }}
-        >
-          <h2 style={{ textAlign: "center", color: "#f72d89", marginBottom: "1.5rem", fontWeight: "bold" }}>
+        <main className="ongoing-adoptions-main">
+          <h2 className="ongoing-adoptions-title">
             Solicitudes de Adopción en Proceso
           </h2>
-
           {isLoading ? (
-            <p style={{ textAlign: "center", color: "#00aeb8" }}>Cargando solicitudes...</p>
+            <p className="ongoing-adoptions-loading">Cargando solicitudes...</p>
           ) : adoptions.length === 0 ? (
-            <p style={{ textAlign: "center", color: "#91d100" }}>No hay solicitudes en proceso.</p>
+            <p className="ongoing-adoptions-empty">No hay solicitudes en proceso.</p>
           ) : (
-            <div
-              style={{
-                display: "grid",
-                gap: "1.5rem",
-                gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
-              }}
-            >
+            <div className="adoption-cards-grid">
               {adoptions.map((adop) => (
-                <div
-                  key={adop._id}
-                  style={{
-                    background: "#fff",
-                    border: "2px solid #f72d89",
-                    borderRadius: "10px",
-                    padding: "1rem 1.5rem",
-                    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div style={{ marginBottom: "1rem" }}>
-                    <h3 style={{ margin: "0 0 0.5rem", color: "#00aeb8" }}>
+                <div key={adop._id} className="adoption-card">
+                  <div className="adoption-card-header">
+                    <h3 className="adoption-card-petname">
                       {adop.petId?.name || "Mascota Desconocida"}
                     </h3>
-                    <p style={{ margin: 0, fontStyle: "italic", color: "#555" }}>
+                    <p className="adoption-card-petinfo">
                       Raza: {adop.petId?.breed || "Desconocida"} | Estado: {adop.petId?.status || "Desconocido"}
                     </p>
                   </div>
-
-                  <div style={{ marginBottom: "1rem" }}>
-                    <h4 style={{ marginBottom: "0.5rem", color: "#f72d89" }}>Datos del Solicitante</h4>
+                  <div className="adoption-card-section">
+                    <h4 className="adoption-card-section-title datos">Datos del Solicitante</h4>
                     <p><strong>Nombre:</strong> {adop.fullName || "N/A"}</p>
                     <p><strong>DPI:</strong> {adop.dpi || "N/A"}</p>
                     <p><strong>Email:</strong> {adop.email || "N/A"}</p>
@@ -279,136 +170,77 @@ export const GetOngoingAdoptions = () => {
                     <p><strong>Tipo de vivienda:</strong> {adop.housingType || "N/A"}</p>
                     <p><strong>Vivienda:</strong> {adop.housingKind || "N/A"}</p>
                   </div>
-
-                  <div style={{ marginBottom: "1rem" }}>
+                  <div className="adoption-card-section adoption-card-files">
                     {adop.dpiImage && (
                       <button
+                        className="adoption-card-btn dpi"
                         onClick={() => openPreview("image", adop.dpiImage)}
-                        style={{
-                          marginRight: "0.5rem",
-                          backgroundColor: "#f72d89",
-                          border: "none",
-                          padding: "0.4rem 0.8rem",
-                          color: "#fff",
-                          borderRadius: "5px",
-                          cursor: "pointer",
-                          fontWeight: "bold",
-                        }}
                       >
                         Ver Foto DPI
                       </button>
                     )}
                     {adop.receiptPdf && (
                       <button
+                        className="adoption-card-btn pdf"
                         onClick={() => openPreview("pdf", adop.receiptPdf)}
-                        style={{
-                          backgroundColor: "#00aeb8",
-                          border: "none",
-                          padding: "0.4rem 0.8rem",
-                          color: "#fff",
-                          borderRadius: "5px",
-                          cursor: "pointer",
-                          fontWeight: "bold",
-                        }}
                       >
                         Ver PDF Recibo + Casa
                       </button>
                     )}
                   </div>
-
-                  <div style={{ marginBottom: "1rem" }}>
-                    <h4 style={{ marginBottom: "0.5rem", color: "#00aeb8" }}>Condiciones que acepta</h4>
-                    <ul style={{ paddingLeft: "1.2rem", margin: 0 }}>
+                  <div className="adoption-card-section">
+                    <h4 className="adoption-card-section-title condiciones">Condiciones que acepta</h4>
+                    <ul className="adoption-card-list">
                       {Object.entries(adop.conditions || {})
                         .filter(([_, v]) => v)
                         .map(([k]) => (
-                          <li key={k} style={{ color: "#555" }}>
+                          <li key={k} className="adoption-card-listitem">
                             {conditionLabels[k] || k}
                           </li>
                         ))}
                       {Object.values(adop.conditions || {}).every((v) => !v) && (
-                        <li style={{ color: "#999", fontStyle: "italic" }}>No aceptó condiciones</li>
+                        <li className="adoption-card-listitem empty">No aceptó condiciones</li>
                       )}
                     </ul>
                   </div>
-
-                  <div style={{ marginBottom: "1rem" }}>
-                    <h4 style={{ marginBottom: "0.5rem", color: "#91d100" }}>Compromisos de adopción</h4>
-                    <ul style={{ paddingLeft: "1.2rem", margin: 0 }}>
+                  <div className="adoption-card-section">
+                    <h4 className="adoption-card-section-title compromisos">Compromisos de adopción</h4>
+                    <ul className="adoption-card-list">
                       {Object.entries(adop.commitments || {})
                         .filter(([_, v]) => v)
                         .map(([k]) => (
-                          <li key={k} style={{ color: "#555" }}>
+                          <li key={k} className="adoption-card-listitem">
                             {commitmentLabels[k] || k}
                           </li>
                         ))}
                       {Object.values(adop.commitments || {}).every((v) => !v) && (
-                        <li style={{ color: "#999", fontStyle: "italic" }}>No asumió compromisos</li>
+                        <li className="adoption-card-listitem empty">No asumió compromisos</li>
                       )}
                     </ul>
                   </div>
-
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginTop: "auto",
-                    }}
-                  >
-                    <small style={{ color: "#777" }}>
+                  <div className="adoption-card-footer">
+                    <small className="adoption-card-date">
                       Fecha solicitud:{" "}
                       {adop.createdAt ? new Date(adop.createdAt).toLocaleDateString() : "N/A"}
                     </small>
                     <span
-                      style={{
-                        padding: "0.25rem 0.75rem",
-                        borderRadius: "15px",
-                        fontWeight: "bold",
-                        color: "#fff",
-                        backgroundColor:
-                          adop.status === "PROGRESS"
-                            ? "#f72d89"
-                            : adop.status === "ACCEPTED"
-                            ? "#00aeb8"
-                            : "#91d100",
-                        textTransform: "uppercase",
-                      }}
+                      className={`adoption-card-status ${adop.status?.toLowerCase() || "progress"}`}
                     >
                       {adop.status || "PROGRESS"}
                     </span>
                   </div>
-
-                  <div style={{ marginTop: "1rem", display: "flex", gap: "0.75rem" }}>
+                  <div className="adoption-card-actions">
                     <button
                       disabled={isReviewing}
+                      className="adoption-card-action-btn aceptar"
                       onClick={() => handleReview(adop._id, "ACCEPTED")}
-                      style={{
-                        flex: 1,
-                        padding: "0.5rem",
-                        backgroundColor: "#00aeb8",
-                        border: "none",
-                        borderRadius: "6px",
-                        color: "#fff",
-                        fontWeight: "bold",
-                        cursor: "pointer",
-                      }}
                     >
                       Aceptar
                     </button>
                     <button
                       disabled={isReviewing}
+                      className="adoption-card-action-btn rechazar"
                       onClick={() => handleReview(adop._id, "REJECTED")}
-                      style={{
-                        flex: 1,
-                        padding: "0.5rem",
-                        backgroundColor: "#91d100",
-                        border: "none",
-                        borderRadius: "6px",
-                        color: "#fff",
-                        fontWeight: "bold",
-                        cursor: "pointer",
-                      }}
                     >
                       Rechazar
                     </button>
@@ -419,7 +251,6 @@ export const GetOngoingAdoptions = () => {
           )}
         </main>
       </div>
-
       <PreviewModal url={previewUrl} type={previewType} onClose={closePreview} />
     </div>
   );

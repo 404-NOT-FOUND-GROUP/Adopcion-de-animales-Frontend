@@ -1,7 +1,7 @@
 import axios from "axios";
 
   const apiClient = axios.create({
-    baseURL: "https://adopcion-de-animales-backend-2.onrender.com/AdopcionDeAnimales/v1",
+    baseURL: "http://127.0.0.1:3000/AdopcionDeAnimales/v1",
     timeout: 5000,
     httpsAgent: false,
     withCredentials: true,  // << aquí
@@ -169,13 +169,15 @@ export const adoptPetById = async (petId, data, files) => {
     if (!userDetails || !userDetails.token) {
       throw new Error("No hay token válido en localStorage");
     }
-    const token = userDetails?.token;
+    const token = userDetails.token;
 
     const formData = new FormData();
 
     for (const key in data) {
-      if (typeof data[key] === "object" && data[key] !== null) {
-        formData.append(key, JSON.stringify(data[key]));
+      if (key === "conditions" || key === "commitments") {
+        for (const subKey in data[key]) {
+          formData.append(subKey, data[key][subKey].toString());
+        }
       } else {
         formData.append(key, data[key]);
       }
@@ -202,6 +204,7 @@ export const adoptPetById = async (petId, data, files) => {
     };
   }
 };
+
 
 
   // Revisar un formulario existente
